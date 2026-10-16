@@ -55,6 +55,34 @@ footer{padding:12px;text-align:center;color:#93a4ae;font-size:10px}
 @keyframes spark{from{transform:translate(-50%,-50%) scale(.85);opacity:.55}to{transform:translate(-50%,-58%) scale(1.15);opacity:1}}
 @media(prefers-reduced-motion:reduce){.moving-worker,.moving-worker *,.worker-action{animation:none!important;transition:none!important}}
 
+
+.moving-worker{will-change:left,top;transition:left 1.25s cubic-bezier(.4,0,.2,1),top 1.25s cubic-bezier(.4,0,.2,1)}
+.moving-worker.walking .leg{animation:legstep .16s infinite alternate}
+.moving-worker.walking .arm{animation:armwork .22s infinite alternate}
+.moving-worker.working .leg{animation:none;transform:rotate(0)}
+.moving-worker.working .arm{animation:toolwork .15s infinite alternate}
+.moving-worker.working .tool{animation:toolflash .22s infinite alternate}
+.worker-action.active{animation:spark .35s infinite alternate}
+.expansion-area{display:none;margin:12px;padding:14px;background:linear-gradient(135deg,#1b2c36,#263d48);border:2px solid #e7ad40;border-radius:14px;box-shadow:0 8px 25px #0005}
+.expansion-area.visible{display:block;animation:buildIn .55s ease-out both}
+.expansion-head{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #536c79;padding-bottom:10px;margin-bottom:12px}
+.expansion-head strong{font-size:clamp(14px,2vw,22px)}.expansion-head small{display:block;color:#b7c9d1;margin-top:4px}
+.expansion-status{background:#176c42;border:1px solid #55d88b;border-radius:20px;padding:5px 10px;font-size:11px;font-weight:900}
+.expansion-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.exp-station{position:relative;min-height:150px;padding:12px;background:#111e27;border:1px solid #4b6876;border-radius:10px;overflow:hidden}
+.exp-icon{display:block;font-size:30px;margin-bottom:8px}.exp-station b{display:block;font-size:13px}.exp-station small{display:block;color:#afc0c8;font-size:11px;margin-top:5px}
+.exp-worker{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:6px 9px;border-radius:8px;background:#263a45;border:1px solid #66808c;font-size:12px;font-weight:900;animation:personWalk 1.5s ease-in-out infinite alternate;animation-delay:var(--delay,0s)}
+.exp-worker i{font-style:normal;font-size:20px}.exp-worker.at-work{background:#164b36;border-color:#57d98e;animation:personWork .22s infinite alternate}
+.exp-station.machine-working{border-color:#ffc857;box-shadow:inset 0 0 0 2px #ffc85733,0 0 15px #ffc85722}
+.exp-station.machine-working .exp-icon{animation:machinePulse .3s infinite alternate}
+.expansion-foot{margin-top:12px;padding:10px;background:#14222b;border-radius:8px;color:#d8e5ea;font-size:12px}
+@keyframes buildIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes personWalk{from{transform:translateX(0)}to{transform:translateX(12px)}}
+@keyframes personWork{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@keyframes machinePulse{from{transform:rotate(-5deg) scale(1)}to{transform:rotate(5deg) scale(1.12)}}
+@media(max-width:760px){.expansion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.exp-station{min-height:135px;padding:9px}}
+@media(max-width:420px){.expansion-area{margin:7px;padding:9px}.expansion-grid{gap:7px}.expansion-head strong{font-size:13px}}
+
 </style>
 </head>
 <body>
@@ -122,63 +150,86 @@ else if(kind==='real'){c.innerHTML='<h2>🛍️ Loja real JR CADEIRAS</h2><p>Est
 document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>showModal(b.dataset.open)));
 $('close').onclick=()=>$('modal').classList.remove('show');$('modal').addEventListener('click',e=>{if(e.target===$('modal'))$('modal').classList.remove('show')});
 
-// Animated crew: each worker walks between the appropriate stations and performs visible tool actions.
+
+// JR CADEIRAS — trabalhadores independentes, estações e expansão funcional.
 const crewMotion = [
- {name:'Leandro',shirt:'#171c22',skin:'#b87850',hair:'#111',stations:[{x:20,y:28,tool:'⚙️',label:'Cortando ferro'},{x:31,y:23,tool:'✨',label:'Pintando ferro'}]},
- {name:'Léo',shirt:'#e8ad21',skin:'#6e432e',hair:'#d9a33b',stations:[{x:20,y:28,tool:'⚙️',label:'Cortando ferro'},{x:31,y:23,tool:'🎨',label:'Pintando ferro'}]},
- {name:'Lauan',shirt:'#8b8c87',skin:'#a96e48',hair:'#151515',stations:[{x:20,y:28,tool:'🪚',label:'Cortando ferro'},{x:31,y:23,tool:'✨',label:'Pintando ferro'}]},
- {name:'Lima Jr',shirt:'#111820',skin:'#9a603e',hair:'#111',stations:[{x:43,y:32,tool:'🪚',label:'Cortando madeira'},{x:48,y:38,tool:'🪵',label:'Separando madeira'}]},
- {name:'Zaza',shirt:'#c62828',skin:'#9b6244',hair:'#111',stations:[{x:43,y:32,tool:'🪚',label:'Cortando madeira'},{x:48,y:38,tool:'🪵',label:'Separando madeira'}]},
- {name:'Daniel',shirt:'#c21f2d',skin:'#f0c4a0',hair:'#211715',stations:[{x:62,y:42,tool:'🧵',label:'Forrando'},{x:67,y:48,tool:'🪡',label:'Costurando estofado'}]},
- {name:'Cissa',shirt:'#171717',skin:'#9e694a',hair:'#17100f',stations:[{x:62,y:42,tool:'🧵',label:'Forrando'},{x:67,y:48,tool:'🪡',label:'Costurando estofado'}]},
- {name:'Breno',shirt:'#111820',skin:'#a96d4a',hair:'#111',stations:[{x:76,y:47,tool:'🔧',label:'Montando cadeira'},{x:82,y:42,tool:'🪛',label:'Ajustando cadeira'}]},
- {name:'Kayke',shirt:'#171d24',skin:'#ad7855',hair:'#111',stations:[{x:76,y:47,tool:'🔧',label:'Montando cadeira'},{x:82,y:42,tool:'🪛',label:'Ajustando cadeira'}]}
+ {name:'Leandro',shirt:'#171c22',skin:'#b87850',hair:'#111',stations:[{x:18,y:28,tool:'⚙️',label:'Cortando ferro',mode:'cut'},{x:30,y:24,tool:'🎨',label:'Pintando ferro',mode:'paint'}]},
+ {name:'Léo',shirt:'#e8ad21',skin:'#6e432e',hair:'#d9a33b',stations:[{x:21,y:33,tool:'⚙️',label:'Cortando ferro',mode:'cut'},{x:33,y:26,tool:'🎨',label:'Pintando ferro',mode:'paint'}]},
+ {name:'Lauan',shirt:'#8b8c87',skin:'#a96e48',hair:'#151515',stations:[{x:24,y:39,tool:'⚙️',label:'Cortando ferro',mode:'cut'},{x:32,y:31,tool:'🎨',label:'Pintando ferro',mode:'paint'}]},
+ {name:'Lima Jr',shirt:'#111820',skin:'#9a603e',hair:'#111',stations:[{x:43,y:32,tool:'🪚',label:'Cortando madeira',mode:'wood'},{x:49,y:39,tool:'🪵',label:'Separando madeira',mode:'wood'}]},
+ {name:'Zaza',shirt:'#c62828',skin:'#9b6244',hair:'#111',stations:[{x:45,y:38,tool:'🪚',label:'Cortando madeira',mode:'wood'},{x:52,y:43,tool:'🪵',label:'Preparando peças',mode:'wood'}]},
+ {name:'Daniel',shirt:'#c21f2d',skin:'#f0c4a0',hair:'#211715',stations:[{x:61,y:43,tool:'🧵',label:'Forrando estofado',mode:'fabric'},{x:67,y:48,tool:'🪡',label:'Costurando estofado',mode:'fabric'}]},
+ {name:'Cissa',shirt:'#171717',skin:'#9e694a',hair:'#17100f',stations:[{x:64,y:48,tool:'🧵',label:'Forrando estofado',mode:'fabric'},{x:70,y:43,tool:'🪡',label:'Costurando estofado',mode:'fabric'}]},
+ {name:'Breno',shirt:'#111820',skin:'#a96d4a',hair:'#111',stations:[{x:76,y:47,tool:'🔧',label:'Montando cadeira',mode:'assembly'},{x:82,y:42,tool:'🪛',label:'Ajustando cadeira',mode:'assembly'}]},
+ {name:'Kayke',shirt:'#171d24',skin:'#ad7855',hair:'#111',stations:[{x:79,y:53,tool:'🔧',label:'Montando cadeira',mode:'assembly'},{x:85,y:46,tool:'🪛',label:'Conferindo montagem',mode:'assembly'}]}
 ];
 const workerEls=[];
+let crewTimer=null;
 function makeCrew(){
  const layer=document.getElementById('workerLayer'); if(!layer || layer.dataset.ready) return;
  layer.dataset.ready='1';
  crewMotion.forEach((w,i)=>{
-  const el=document.createElement('div'); el.className='moving-worker'; el.style.setProperty('--shirt',w.shirt);el.style.setProperty('--skin',w.skin);el.style.setProperty('--hair',w.hair);
+  const el=document.createElement('div'); el.className='moving-worker walking'; el.style.setProperty('--shirt',w.shirt);el.style.setProperty('--skin',w.skin);el.style.setProperty('--hair',w.hair);
   el.innerHTML=`<div class="tag">${w.name}</div><div class="hair"></div><div class="head"></div><div class="body"></div><div class="arm a"></div><div class="arm b"></div><div class="leg a"></div><div class="leg b"></div><div class="tool">${w.stations[0].tool}</div>`;
   layer.appendChild(el);
   const fx=document.createElement('div');fx.className='worker-action';fx.textContent='✨';layer.appendChild(fx);
   workerEls.push({el,fx,w,i,step:0});
  });
- moveCrew();
- setInterval(moveCrew,2450);
+ // Initial stagger keeps every employee independent instead of moving as one group.
+ workerEls.forEach((o,i)=>setTimeout(()=>runWorkerCycle(o),i*320));
 }
-function moveCrew(){
- const busy=state.busy;
- workerEls.forEach(o=>{
-  const station=o.w.stations[o.step%o.w.stations.length];
-  o.el.style.left=station.x+'%';o.el.style.top=station.y+'%';
-  o.el.classList.toggle('working',busy || true);
-  const tool=o.el.querySelector('.tool');tool.textContent=station.tool;
-  o.fx.style.left=(station.x+2)+'%';o.fx.style.top=(station.y+7)+'%';o.fx.textContent=station.tool==='✨'?'✨':station.tool==='⚙️'?'⚡':station.tool==='🪚'?'🪵':station.tool==='🧵'?'🧵':'🔩';
+function runWorkerCycle(o){
+ if(!o || !o.el.isConnected)return;
+ const station=o.w.stations[o.step%o.w.stations.length];
+ o.el.classList.remove('working');o.el.classList.add('walking');
+ o.el.style.left=station.x+'%';o.el.style.top=station.y+'%';
+ o.el.querySelector('.tool').textContent='🚶';
+ o.fx.style.left=(station.x+2)+'%';o.fx.style.top=(station.y+7)+'%';o.fx.textContent='💨';
+ const travel=1250+(o.i%3)*180;
+ setTimeout(()=>{
+  if(!o.el.isConnected)return;
+  o.el.classList.remove('walking');o.el.classList.add('working');
+  o.el.querySelector('.tool').textContent=station.tool;
   o.el.setAttribute('aria-label',o.w.name+' — '+station.label);
-  o.step=(o.step+1)%o.w.stations.length;
- });
+  o.fx.textContent=station.mode==='cut'?'⚡':station.mode==='paint'?'✨':station.mode==='wood'?'🪵':station.mode==='fabric'?'🧵':'🔩';
+  // Tool particles are timed to the station action, not just decoration on the whole scene.
+  o.fx.classList.add('active');
+  setTimeout(()=>{o.step=(o.step+1)%o.w.stations.length;runWorkerCycle(o)},1250+(o.i%4)*210);
+ },travel);
 }
 function addExpansionVisual(){
  const wrap=document.getElementById('sceneWrap');
- if(wrap){wrap.classList.add('factory-expanded');document.body.classList.add('factory-expanded');}
-}
-const oldShowModal=showModal;
-showModal=function(kind){
- oldShowModal(kind);
- if(kind==='expand'){
-  const c=document.getElementById('modalContent');
-  if(c && !c.querySelector('[data-expand-visual]')){
-   const note=document.createElement('p');note.dataset.expandVisual='1';note.className='muted';note.textContent='A expansão libera visualmente um novo galpão. Os trabalhadores passam a circular entre as estações de produção.';
-   const btn=c.querySelector('#expand');
-   if(btn) btn.textContent='🏗️ Ampliar galpão · R$ 1.000';
-   c.appendChild(note);
-  }
-  const expandBtn=document.getElementById('expand');
-  if(expandBtn){expandBtn.addEventListener('click',()=>{if(document.body.classList.contains('factory-expanded'))return;addExpansionVisual();}, {once:true});}
+ if(wrap){wrap.classList.add('factory-expanded');}
+ let area=document.getElementById('expansionArea');
+ if(!area){
+  area=document.createElement('section');area.id='expansionArea';area.className='expansion-area';
+  area.innerHTML=`<div class="expansion-head"><div><strong>🏗️ GALPÃO 2 — ÁREA NOVA</strong><small>Construção concluída · capacidade +25%</small></div><span class="expansion-status">ATIVO</span></div>
+  <div class="expansion-grid">
+   <div class="exp-station"><span class="exp-icon">🪚</span><b>Serra de precisão</b><small>Corte de madeira · novo posto</small><div class="exp-worker" data-person="Lima Jr">Lima Jr <i>🪚</i></div></div>
+   <div class="exp-station"><span class="exp-icon">🎨</span><b cabine de pintura</b><small>Tinta de secagem rápida</small><div class="exp-worker" data-person="Leandro">Leandro <i>🎨</i></div></div>
+   <div class="exp-station"><span class="exp-icon">🧵</span><b>Bancada de estofamento</b><small>Tecido e capitonê</small><div class="exp-worker" data-person="Cissa">Cissa <i>🧵</i></div></div>
+   <div class="exp-station"><span class="exp-icon">🔧</span><b>Oficina de manutenção</b><small>Reparo de cadeiras usadas</small><div class="exp-worker" data-person="Breno">Breno <i>🔧</i></div></div>
+  </div><div class="expansion-foot">📦 Mais espaço para estoque · ⚙️ Máquinas extras · 🪑 Pedidos de manutenção liberados</div>`;
+  const stage=document.querySelector('.stage');
+  if(stage)stage.insertAdjacentElement('afterend',area);
  }
-};
+ area.classList.add('visible');
+ area.scrollIntoView({behavior:'smooth',block:'nearest'});
+ // Separate, repeated walking/work cycles inside the newly-built stations.
+ area.querySelectorAll('.exp-worker').forEach((worker,i)=>{
+  worker.classList.add('moving');
+  worker.style.setProperty('--delay',(i*.25)+'s');
+ });
+ if(!area.dataset.active){
+  area.dataset.active='1';
+  const stations=[...area.querySelectorAll('.exp-station')];
+  stations.forEach((st,i)=>setInterval(()=>{
+   st.classList.toggle('machine-working');
+   const person=st.querySelector('.exp-worker');
+   if(person){person.classList.toggle('at-work');person.querySelector('i').textContent=person.classList.contains('at-work')?'✨':({0:'🪚',1:'🎨',2:'🧵',3:'🔧'}[i]);}
+  },850+i*170));
+ }
+}
 
 makeCrew();
 sync();
