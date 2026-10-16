@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>JR CADEIRAS — Fábrica Tycoon</title>
+<style>
+:root{--bg:#111820;--panel:#19232d;--line:#344452;--gold:#f5c451;--mint:#5ee0ad;--text:#f2f5f7;--muted:#a9b8c4}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#243341,#0e141b 70%);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif;overflow-x:hidden}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:#111a22;border-bottom:1px solid #31404c;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ffdc77,#c77b22);display:grid;place-items:center;color:#17202a;font-weight:1000;font-size:17px;box-shadow:0 4px 18px #0006}.brand h1{font-size:17px;letter-spacing:1.5px;margin:0}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.5px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.stat{background:#1d2934;border:1px solid #364755;border-radius:10px;padding:7px 10px;min-width:85px}.stat small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase}.stat b{font-size:15px}
+main{max-width:1440px;margin:auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px}.game-shell{min-width:0;background:#17212a;border:1px solid #344654;border-radius:16px;overflow:hidden;box-shadow:0 18px 50px #0004}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border-bottom:1px solid #344654;background:#1c2934}.toolbar strong{font-size:12px;letter-spacing:.6px}.toolbar span{color:var(--muted);font-size:11px}.canvas-wrap{position:relative;background:#18242c;min-height:380px}canvas{display:block;width:100%;height:auto;touch-action:manipulation}.hint{position:absolute;left:10px;bottom:10px;background:#0b1119d9;border:1px solid #3b4b56;border-radius:8px;padding:7px 9px;color:#c5d1da;font-size:11px;pointer-events:none}
+.sidebar{display:flex;flex-direction:column;gap:12px}.panel{background:linear-gradient(160deg,#1b2732,#151e27);border:1px solid #344654;border-radius:14px;padding:13px}.panel h2{font-size:13px;margin:0 0 10px;letter-spacing:.7px;text-transform:uppercase}.order{border:1px solid #405361;background:#202e39;border-radius:10px;padding:10px;margin-bottom:8px}.order:last-child{margin-bottom:0}.order-head{display:flex;justify-content:space-between;gap:8px;font-weight:700}.tag{font-size:10px;border-radius:6px;padding:3px 6px;background:#304653;color:#c7dbe7;white-space:nowrap}.order p{margin:7px 0;color:var(--muted);font-size:12px}.progress{height:6px;background:#0d141a;border-radius:10px;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:linear-gradient(90deg,#f2b84b,#ffe08a);width:0%;border-radius:10px}
+button{font:inherit;cursor:pointer;border:1px solid #4a5e6c;color:#eef4f7;background:#293946;border-radius:9px;padding:9px 10px;transition:.15s}button:hover{filter:brightness(1.14);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}.primary{background:linear-gradient(135deg,#f3c95b,#e6a83d);border-color:#ffdb7a;color:#18212a;font-weight:800}.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.upgrade{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #2e3e49;padding:9px 0}.upgrade:first-of-type{border-top:0;padding-top:0}.upgrade b{font-size:12px}.upgrade small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.upgrade button{font-size:11px;padding:7px}.notice{color:#b9c9d3;font-size:11px;line-height:1.45}.legend{display:flex;flex-wrap:wrap;gap:6px}.legend span{border:1px solid #344654;background:#202c36;padding:5px 7px;border-radius:7px;font-size:10px;color:#c8d4dc}.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,20px);opacity:0;background:#e7f8ef;color:#163629;padding:10px 14px;border-radius:10px;font-weight:700;box-shadow:0 8px 30px #0007;transition:.25s;z-index:10;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:980px){main{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.panel:last-child{grid-column:1/-1}}
+@media(max-width:560px){header{align-items:flex-start;flex-direction:column}.stats{justify-content:flex-start;width:100%}.stat{flex:1;min-width:75px}.brand h1{font-size:15px}main{padding:8px;gap:9px}.sidebar{grid-template-columns:1fr}.panel:last-child{grid-column:auto}.canvas-wrap{min-height:250px}.hint{font-size:9px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">JR</div><div><h1>JR CADEIRAS</h1><small>FÁBRICA TYCOON · PROTÓTIPO JOGÁVEL</small></div></div>
+ <div class="stats">
+  <div class="stat"><small>Caixa</small><b id="money">R$ 1.200</b></div>
+  <div class="stat"><small>Pedidos</small><b id="ordersCount">0</b></div>
+  <div class="stat"><small>Produção</small><b id="produced">0</b></div>
+  <div class="stat"><small>Empresa</small><b id="companyLevel">Nível 1</b></div>
+ </div>
+</header>
+<main>
+ <section class="game-shell">
+  <div class="toolbar"><strong>LINHA DE PRODUÇÃO ISOMÉTRICA</strong><span id="status">Fábrica funcionando</span></div>
+  <div class="canvas-wrap"><canvas id="game" width="1000" height="650" aria-label="Fábrica JR CADEIRAS"></canvas><div class="hint">Peças percorrem as 5 etapas automaticamente · Toque em uma máquina para ver seu nível</div></div>
+  <div class="toolbar"><span>Fluxo: Ferro → Pintura → Madeira → Estofamento → Montagem</span><button id="pauseBtn">Ⅱ Pausar</button></div>
+ </section>
+ <aside class="sidebar">
+  <section class="panel"><h2>📦 Pedidos ativos</h2><div id="ordersList"></div></section>
+  <section class="panel"><h2>⚙️ Máquinas</h2><div id="machinesList"></div></section>
+  <section class="panel"><h2>🏭 Evolução da empresa</h2><div id="companyInfo" class="notice">Nível 1 — Casa simples. Produza móveis para crescer.</div><div style="height:9px"></div><button id="companyBtn" class="primary" style="width:100%">Expandir empresa · R$ 2.000</button></section>
+  <section class="panel"><h2>🎨 Catálogo de produção</h2><div class="legend"><span>🪑 Cadeira de barbeiro</span><span>🛋 Banco baú</span><span>🚿 Lavatório</span><span>⬛ Preto</span><span>🟥 Vermelho vintage</span><span>🟦 Azul marinho</span><span>🟫 Caramelo</span><span>🤎 Marrom couro</span><span>⬜ Branco gelo</span></div><div style="height:10px"></div><p class="notice">Protótipo funcional: pedidos aleatórios, peças visíveis nas esteiras, cinco barras de progresso, caixa, upgrades e expansão. A arte usa Canvas e formas vetoriais para manter o jogo leve em celular.</p></section>
+ </aside>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(() => {
+'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const moneyEl=document.getElementById('money'),ordersCountEl=document.getElementById('ordersCount'),producedEl=document.getElementById('produced'),levelEl=document.getElementById('companyLevel'),ordersList=document.getElementById('ordersList'),machinesList=document.getElementById('machinesList'),companyInfo=document.getElementById('companyInfo'),companyBtn=document.getElementById('companyBtn'),pauseBtn=document.getElementById('pauseBtn'),statusEl=document.getElementById('status'),toastEl=document.getElementById('toast');
+const COLORS=[{name:'Preto',hex:'#20242a'},{name:'Vermelho Vintage',hex:'#a63d43'},{name:'Azul Marinho',hex:'#294c78'},{name:'Caramelo',hex:'#bd8549'},{name:'Marrom Couro',hex:'#704632'},{name:'Branco Gelo',hex:'#e5e5d9'}];
+const FURNITURE=[{name:'Cadeira de Barbeiro',icon:'chair',base:480,unlock:1},{name:'Banco de Espera Baú',icon:'bench',base:320,unlock:1},{name:'Lavatório',icon:'wash',base:620,unlock:2}];
+const STAGES=[
+ {name:'Corte de Ferro',short:'CORTE FERRO',color:'#70b9d8',base:5,employee:'Léo'},
+ {name:'Pintura de Ferro',short:'PINTURA',color:'#d77b6c',base:5.5,employee:'Leandro'},
+ {name:'Corte de Madeira',short:'CORTE MADEIRA',color:'#c69b65',base:6,employee:'Lauan / Lima Jr'},
+ {name:'Estofamento',short:'ESTOFAMENTO',color:'#b88bdb',base:6.5,employee:'Zaza / Daniel / Cissa'},
+ {name:'Montagem',short:'MONTAGEM',color:'#78d1a0',base:7,employee:'Breno / Kayke'}
+];
+class Machine{
+ constructor(stage,index){this.stage=stage;this.index=index;this.level=1;this.cost=350+index*120;this.items=[];this.flash=0;}
+ get speed(){return 1+(this.level-1)*.34}
+ update(dt){this.flash=Math.max(0,this.flash-dt);for(const item of this.items){item.progress+=dt*this.speed/STAGES[this.index].base;item.workTime+=dt;} }
+ add(item){this.items.push(item);this.flash=.4;}
+ takeFinished(){const out=[];this.items=this.items.filter(i=>{if(i.progress>=1){out.push(i);this.flash=.25;return false;}return true;});return out;}
+ upgrade(){if(game.money<this.cost)return false;game.money-=this.cost;this.level++;this.cost=Math.round(this.cost*1.65);this.flash=.7;return true;}
+}
+class Employee{
+ constructor(name,skin,shirt,pants,role){Object.assign(this,{name,skin,shirt,pants,role,phase:Math.random()*6.28,sweat:0});}
+ update(dt,busy){this.phase+=dt*(busy?12:2.3);this.sweat=busy?Math.min(1,this.sweat+dt*.4):Math.max(0,this.sweat-dt*.25);}
+}
+class Order{
+ constructor(id){this.id=id;const available=FURNITURE.filter(f=>f.unlock<=game.companyLevel);this.furniture=available[Math.floor(Math.random()*available.length)];this.color=COLORS[Math.floor(Math.random()*COLORS.length)];this.qty=1+Math.floor(Math.random()*4);this.created=performance.now();this.units=[];for(let n=0;n<this.qty;n++)this.units.push({id:`${id}-${n}`,orderId:id,furniture:this.furniture,color:this.color,stage:0,progress:0,workTime:0,phase:Math.random()*6.28});this.done=0;this.value=this.furniture.base*this.qty;this.status='Em produção';}
+}
+const employees=[
+ new Employee('Léo','#75452f','#f1c943','#20242b','ferro'),new Employee('Leandro','#efc7a6','#252b32','#37638c','pintura'),new Employee('Lauan','#a86f4e','#858b90','#262b30','ferro'),new Employee('Lima Jr','#a86f4e','#171a1d','#456184','madeira'),new Employee('Zaza','#a46d4f','#bf4246','#38618a','madeira'),new Employee('Daniel','#edc6a6','#d13a43','#17191e','estofamento'),new Employee('Cissa','#bd8a68','#171a1d','#355a79','estofamento'),new Employee('Breno','#b77c59','#191d21','#15191d','montagem'),new Employee('Kayke','#b77c59','#111820','#171c22','montagem')
+];
+const game={money:1200,companyLevel:1,orders:[],machines:STAGES.map((s,i)=>new Machine(s,i)),nextOrder:1,produced:0,paused:false,lastOrderAt:0,selectedMachine:0,particles:[],lastTime:0};
+const companyCosts=[0,2000,8000,25000];
+function toast(msg){toastEl.textContent=msg;toastEl.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>toastEl.classList.remove('show'),1900);}
+function spawnOrder(){if(game.orders.length>=8)return;const o=new Order(game.nextOrder++);game.orders.push(o);o.units.forEach((u,i)=>{u.queueOffset=i*.2;});renderUI();toast(`Pedido #${o.id}: ${o.qty} ${o.furniture.name.toLowerCase()} · ${o.color.name}`);}
+function update(dt){
+ if(game.paused)return;
+ game.machines.forEach(m=>m.update(dt));
+ for(let i=0;i<game.machines.length;i++){
+  const machine=game.machines[i],finished=machine.takeFinished();
+  for(const item of finished){
+   if(i===game.machines.length-1){const order=game.orders.find(o=>o.id===item.orderId);if(order){order.done++;if(order.done>=order.qty){game.money+=order.value;game.produced+=order.qty;game.orders=game.orders.filter(o=>o.id!==order.id);toast(`Pedido #${order.id} concluído! +${formatMoney(order.value)}`);renderUI();}}burst(isoPoints[i].x,isoPoints[i].y,'#f5ca5c',9);}
+   else {item.stage=i+1;item.progress=0;item.workTime=0;game.machines[i+1].add(item);burst(isoPoints[i].x,isoPoints[i].y,STAGES[i].color,4);}
+  }
+ }
+ if(performance.now()-game.lastOrderAt>9500){game.lastOrderAt=performance.now();spawnOrder();}
+ employees.forEach((e,i)=>e.update(dt,game.machines[Math.min(4,Math.floor(i/2))].items.length>0));
+ for(const p of game.particles){p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;}game.particles=game.particles.filter(p=>p.life>0);
+}
+function formatMoney(n){return 'R$ '+Math.round(n).toLocaleString('pt-BR');}
+function burst(x,y,color,n){for(let i=0;i<n;i++)game.particles.push({x:x+(Math.random()-.5)*20,y:y+(Math.random()-.5)*15,vx:(Math.random()-.5)*50,vy:-15-Math.random()*45,life:.5+Math.random()*.5,color});}
+function iso(x,y,z=0){return {x:500+(x-y)*.72,y:275+(x+y)*.36-z};}
+const isoPoints=[{x:270,y:285},{x:385,y:330},{x:500,y:375},{x:615,y:420},{x:730,y:465}];
+function poly(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>{const q=Array.isArray(p)?{x:p[0],y:p[1]}:p;i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}}
+function line(points,color,width=2){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.lineJoin='round';ctx.stroke();}
+function text(t,x,y,size=11,color='#e8eef2',align='center',weight='600'){ctx.font=`${weight} ${size}px system-ui`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(t,x,y);}
+function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}}
+function drawFloor(){
+ ctx.clearRect(0,0,1000,650);
+ const g=ctx.createLinearGradient(0,0,1000,650);g.addColorStop(0,'#24343c');g.addColorStop(1,'#17232b');ctx.fillStyle=g;ctx.fillRect(0,0,1000,650);
+ // Isometric factory floor
+ poly([[500,55],[940,280],[500,540],[60,280]],'#263943','#405762');
+ for(let i=0;i<=8;i++){const t=i/8;line([[60+(440*t),280-(225*t)],[500+(440*t),55+(225*t)]],'#344a55',1);line([[60+(440*t),280+(260*t)],[500-(440*t),540-(260*t)]],'#344a55',1);}
+ // back wall and windows
+ poly([[60,280],[500,55],[500,135],[60,360]],'#344955','#4a626e');poly([[500,55],[940,280],[940,360],[500,135]],'#2b3d47','#4a626e');
+ for(let i=0;i<4;i++){const x=130+i*90;poly([[x,245-i*46],[x+45,222-i*46],[x+45,258-i*46],[x,281-i*46]],'#8bb6c2','#b7d4d9');line([[x+22,234-i*46],[x+22,270-i*46]],'#527582',2);}
+ text('JR CADEIRAS',500,94,20,'#f5ca62','center','900');text('FÁBRICA · LINHA DE PRODUÇÃO',500,111,9,'#b7c7ce','center','700');
+}
+function drawConveyor(i){
+ const p=isoPoints[i],x=p.x,y=p.y;
+ // shadow and conveyor body in pseudo-isometric
+ poly([[x-67,y+16],[x,y-17],[x+67,y+16],[x,y+49]],'#10191e','#43535b');
+ poly([[x-67,y+5],[x,y-28],[x+67,y+5],[x,y+38]],'#465861','#81949b');
+ poly([[x-59,y+5],[x,y-24],[x+59,y+5],[x,y+34]],'#18252b','#5b6d75');
+ // rollers
+ for(let r=0;r<7;r++){const t=(r-3)/3;line([[x+t*47-4,y+5-Math.abs(t)*24],[x+t*47+4,y+10-Math.abs(t)*24]],'#82949b',2);}
+ // legs
+ line([[x-47,y+28],[x-47,y+52]],'#64757b',5);line([[x+46,y+28],[x+46,y+52]],'#64757b',5);
+ // machine hood
+ const level=game.machines[i].level;
+ poly([[x-40,y-26],[x,y-47],[x+40,y-26],[x,y-5]],i===game.selectedMachine?'#e0ad47':['#4e879c','#b45c53','#9c7448','#9272b5','#448c70'][i],'#b8c8cd');
+ poly([[x-40,y-26],[x,y-5],[x,y+14],[x-40,y-7]],'#2b3b43','#70838b');poly([[x,y-5],[x+40,y-26],[x+40,y-7],[x,y+14]],'#1b2a32','#60727a');
+ // machine details
+ if(i===0){line([[x-18,y-22],[x-7,y-11],[x+7,y-22]],'#dce9ed',3);line([[x-7,y-11],[x-7,y+0]],'#dce9ed',3);}
+ if(i===1){for(let k=0;k<3;k++)roundRect(x-17+k*12,y-27,7,12,2,'#f3c4c0','#6c3b3b');}
+ if(i===2){line([[x-21,y-26],[x-4,y-13],[x+16,y-25]],'#f4d4a3',4);line([[x-4,y-13],[x-4,y-3]],'#f4d4a3',3);}
+ if(i===3){roundRect(x-16,y-31,32,16,5,'#d7c5e7','#755a90');line([[x-10,y-23],[x+10,y-23]],'#8d6cad',2);}
+ if(i===4){roundRect(x-18,y-31,36,19,3,'#9ae1bd','#32694d');text('JR',x,y-17,10,'#24533d','center','900');}
+ // name plate
+ roundRect(x-52,y+51,104,24,6,'#10191f','#425661');text(STAGES[i].short,x,y+61,9,'#f0f5f6','center','800');
+ const m=game.machines[i],pct=Math.min(1,m.items.length?m.items[0].progress:0);
+ roundRect(x-43,y+66,86,5,3,'#091014');roundRect(x-43,y+66,86*pct,5,3,STAGES[i].color);
+ text('NÍVEL '+m.level,x,y+88,9,'#b9c9d0');
+}
+function drawEmployee(e,x,y,index,busy){
+ const bob=Math.sin(e.phase)* (busy?2.4:1.3),arm=Math.sin(e.phase*1.6)*(busy?7:2);
+ ctx.save();ctx.translate(x,y+bob);
+ // shadow
+ ctx.fillStyle='#0a1115aa';ctx.beginPath();ctx.ellipse(0,0,14,6,0,0,Math.PI*2);ctx.fill();
+ // legs, shoes
+ line([[-5,-13],[-6,-4]],e.pants,5);line([[5,-13],[7,-4]],e.pants,5);line([[-7,-4],[-2,-4]],'#302820',4);line([[5,-4],[10,-4]],'#302820',4);
+ // body
+ roundRect(-9,-31,18,20,4,e.shirt,'#111820');
+ // arms moving
+ line([[-8,-28],[-12-arm*.35,-18]],e.skin,4);line([[8,-28],[12+arm*.35,-18]],e.skin,4);
+ // head and hair
+ ctx.fillStyle=e.skin;ctx.beginPath();ctx.arc(0,-39,8,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle=index===0?'#171719':index===1?'#426a91':'#17191d';ctx.beginPath();ctx.arc(0,-42,8,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(-8,-42,16,4);
+ if(e.name==='Léo'){roundRect(-8,-41,16,5,2,'#2b3136','#e0d3a0');}
+ if(e.name==='Leandro'){roundRect(-8,-48,16,5,2,'#2f669b');}
+ if(e.name==='Lima Jr'){roundRect(-8,-47,16,5,2,'#17191d');line([[8,-20],[13,-18]],'#2e8dd1',2);}
+ if(e.name==='Daniel'){text('CRF',0,-28,5,'#fff','center','900');}
+ if(e.name==='Cissa'){ctx.fillStyle='#101215';ctx.fillRect(-8,-44,4,15);ctx.fillRect(4,-44,4,15);}
+ if(busy&&e.sweat>.25){ctx.fillStyle='#9de9ff';ctx.beginPath();ctx.ellipse(10,-42,2,4,0,0,Math.PI*2);ctx.fill();}
+ text(e.name,x?0:0,-55,8,'#e7eef1','center','700');
+ ctx.restore();
+}
+function drawFurniture(item,x,y,scale=1){
+ ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);const c=item.color.hex;
+ if(item.furniture.icon==='chair'){
+  // isometric barber chair silhouette
+  line([[-6,2],[-9,13],[1,17]],'#8b969b',3);line([[7,1],[10,13],[1,17]],'#8b969b',3);
+  poly([[-12,-20],[0,-26],[13,-19],[1,-13]],c,'#d4d9da');poly([[-12,-20],[1,-13],[1,2],[-12,-5]],c,'#9da7ab');poly([[1,-13],[13,-19],[13,-4],[1,2]],c,'#6b777d');
+  poly([[-9,-33],[1,-38],[11,-32],[1,-27]],c,'#d4d9da');poly([[-9,-33],[1,-27],[1,-15],[-9,-21]],c,'#9da7ab');poly([[1,-27],[11,-32],[11,-20],[1,-15]],c,'#6b777d');
+  line([[-9,-21],[-12,-10]],'#d2b26e',2);line([[11,-20],[14,-10]],'#d2b26e',2);
+ }else if(item.furniture.icon==='bench'){
+  poly([[-20,-9],[0,-19],[21,-9],[0,1]],c,'#c7b8a4');poly([[-20,-9],[0,1],[0,12],[-20,2]],c,'#8f7964');poly([[0,1],[21,-9],[21,2],[0,12]],'#614a3b','#c7b8a4');line([[-15,-13],[0,-21],[16,-13]],'#e1d0b5',3);
+ }else{
+  poly([[-19,-12],[0,-22],[20,-12],[0,-2]],'#e7e9e2','#aab8bd');poly([[-19,-12],[0,-2],[0,8],[-19,-2]],'#c5d0d2','#7b8d94');poly([[0,-2],[20,-12],[20,-2],[0,8]],'#8fa4ad','#dce7e8');poly([[-12,-24],[0,-30],[12,-24],[0,-18]],'#222d35','#aebdc3');line([[0,-18],[0,-2]],'#dfe9eb',2);
+ }
+ ctx.restore();
+}
+function drawPieces(){
+ game.machines.forEach((m,i)=>{m.items.forEach((item,j)=>{
+  // progress is represented along the conveyor; piece advances visibly through station
+  const p=isoPoints[i],spread=(j-(m.items.length-1)/2)*13;
+  const lift=Math.sin(item.workTime*5+item.phase)*2;
+  drawFurniture(item,p.x+spread,p.y-15+lift,.72);
+ });});
+ // connector belts between stations: pieces moving between machines remain visible along path
+ game.orders.forEach(o=>o.units.forEach(item=>{
+  if(item.stage<0||item.stage>4)return;
+  // Only render pieces in actual machine queues; transitions happen instantly at station completion.
+ }));
+}
+function drawConnectors(){
+ for(let i=0;i<4;i++){const a=isoPoints[i],b=isoPoints[i+1];line([[a.x+46,a.y+7],[b.x-46,b.y+7]],'#71838a',8);line([[a.x+46,a.y+7],[b.x-46,b.y+7]],'#25353c',4);for(let k=0;k<5;k++){const t=((performance.now()/900+k/5)%1);const x=a.x+46+(b.x-a.x-92)*t,y=a.y+7+(b.y-a.y)*t;ctx.fillStyle='#c4d0d3';ctx.beginPath();ctx.arc(x,y,2.5,0,Math.PI*2);ctx.fill();}}
+}
+function draw(){
+ drawFloor();drawConnectors();
+ // machine station glow
+ game.machines.forEach((m,i)=>{if(i===game.selectedMachine){const p=isoPoints[i];ctx.fillStyle='#f5c45118';ctx.beginPath();ctx.ellipse(p.x,p.y+8,83,46,0,0,Math.PI*2);ctx.fill();}drawConveyor(i);});
+ drawPieces();
+ // employee positions around stations
+ const pos=[[isoPoints[0].x-45,isoPoints[0].y+46],[isoPoints[1].x+48,isoPoints[1].y+38],[isoPoints[0].x+45,isoPoints[0].y+46],[isoPoints[2].x-47,isoPoints[2].y+43],[isoPoints[2].x+48,isoPoints[2].y+44],[isoPoints[3].x-44,isoPoints[3].y+43],[isoPoints[3].x+48,isoPoints[3].y+43],[isoPoints[4].x-43,isoPoints[4].y+43],[isoPoints[4].x+47,isoPoints[4].y+43]];
+ employees.forEach((e,i)=>{const station=[0,1,0,2,2,3,3,4,4][i];drawEmployee(e,pos[i][0],pos[i][1],i,game.machines[station].items.length>0);});
+ game.particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,2.5,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;});
+ // floating current order count
+ roundRect(18,18,176,46,10,'#101a22dd','#405560');text('LINHA ATIVA',31,35,9,'#91a6b1','left','800');text(`${game.machines.reduce((n,m)=>n+m.items.length,0)} peças em produção`,31,52,13,'#f3f6f7','left','800');
+}
+function renderUI(){
+ moneyEl.textContent=formatMoney(game.money);ordersCountEl.textContent=game.orders.length;producedEl.textContent=game.produced;levelEl.textContent='Nível '+game.companyLevel;
+ ordersList.innerHTML=game.orders.length?game.orders.slice(0,5).map(o=>{const pct=Math.round(o.done/o.qty*100);return `<div class="order"><div class="order-head"><span>#${o.id} · ${o.furniture.name}</span><span class="tag">${o.qty} un.</span></div><p>${o.color.name} · ${formatMoney(o.value)} · ${o.done}/${o.qty} finalizados</p><div class="progress"><i style="width:${pct}%"></i></div></div>`}).join(''):'<p class="notice">Nenhum pedido ativo. Um novo pedido chega automaticamente.</p>';
+ machinesList.innerHTML=game.machines.map((m,i)=>`<div class="upgrade"><div><b>${STAGES[i].name}</b><small>Nível ${m.level} · ${m.items.length} peça(s) · velocidade ${m.speed.toFixed(1)}x</small></div><button data-upgrade="${i}" ${game.money<m.cost?'disabled':''}>↑ ${formatMoney(m.cost)}</button></div>`).join('');
+ machinesList.querySelectorAll('[data-upgrade]').forEach(b=>b.addEventListener('click',()=>{const m=game.machines[+b.dataset.upgrade];if(m.upgrade()){toast(`${m.stage.name} evoluiu para nível ${m.level}!`);renderUI();}else toast('Dinheiro insuficiente.');}));
+ const names=['Casa simples','Fábrica pequena','Fábrica e loja','Grande Rede JR'];companyInfo.textContent=`Nível ${game.companyLevel} — ${names[game.companyLevel-1]}. ${game.companyLevel===1?'Produza móveis para liberar a fábrica pequena.':game.companyLevel===2?'Lavatório desbloqueado! Continue expandindo.':game.companyLevel===3?'A loja está aberta. Prepare-se para escalar.':'Você chegou ao topo da rede JR.'}`;
+ const cost=companyCosts[game.companyLevel];companyBtn.textContent=game.companyLevel>=4?'NÍVEL MÁXIMO ALCANÇADO':`Expandir empresa · ${formatMoney(cost)}`;companyBtn.disabled=game.companyLevel>=4||game.money<cost;
+}
+companyBtn.addEventListener('click',()=>{const cost=companyCosts[game.companyLevel];if(game.companyLevel>=4)return;if(game.money<cost){toast('Dinheiro insuficiente para expandir.');return;}game.money-=cost;game.companyLevel++;toast(`Empresa evoluiu: nível ${game.companyLevel}!`);renderUI();});
+pauseBtn.addEventListener('click',()=>{game.paused=!game.paused;pauseBtn.textContent=game.paused?'▶ Continuar':'Ⅱ Pausar';statusEl.textContent=game.paused?'Produção pausada':'Fábrica funcionando';});
+canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*canvas.width/r.width,y=(e.clientY-r.top)*canvas.height/r.height;let best=-1,dist=1e9;isoPoints.forEach((p,i)=>{const d=Math.hypot(x-p.x,y-p.y);if(d<dist){dist=d;best=i;}});if(dist<95){game.selectedMachine=best;renderUI();}});
+function frame(now){const dt=Math.min(.05,(now-game.lastTime)/1000||0);game.lastTime=now;update(dt);draw();requestAnimationFrame(frame);}
+game.lastOrderAt=performance.now();spawnOrder();spawnOrder();renderUI();requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
