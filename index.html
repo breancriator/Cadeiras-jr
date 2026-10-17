@@ -1,333 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#121821">
-<title>JR CADEIRAS — Fábrica de Mobiliário</title>
+<title>JR CADEIRAS — Fábrica</title>
 <style>
-:root{--bg-dark:#121821;--panel-bg:#1c2533;--panel-2:#222e3d;--line:#354456;--text:#f4f6f8;--muted:#aab5c3;--accent-yellow:#f1c40f;--accent-green:#2ecc71;--blue:#3498db;--red:#e45d5d}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg-dark);color:var(--text);font:14px/1.35 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body{min-height:100vh;background:radial-gradient(ellipse at 50% -20%,#29384b 0,var(--bg-dark) 65%)}
-button,input,select{font:inherit}button{cursor:pointer;transition:filter .15s,transform .15s}button:hover{filter:brightness(1.1)}button:active{transform:translateY(1px)}button:disabled{opacity:.45;cursor:not-allowed}
-.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:10px 14px;background:#10161ff2;border-bottom:1px solid #394657;box-shadow:0 5px 20px #0004;backdrop-filter:blur(12px)}
-.brand{display:flex;align-items:center;gap:9px;min-width:210px}.brand-mark{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#ffe17a,#d98c19);color:#151a22;font-weight:1000;font-size:20px;box-shadow:inset 0 1px #fff8,0 4px 15px #0004}.brand-title{font-size:16px;font-weight:950;letter-spacing:.4px;line-height:1.05}.brand-sub{font-size:9px;letter-spacing:1px;color:#b9c4d0;margin-top:4px}
-.level-box{min-width:170px;max-width:230px;flex:1;background:#1b2531;border:1px solid #465466;border-radius:10px;padding:8px 10px}.level-row{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:11px;margin-bottom:6px}.level-track,.progress-track{height:8px;border-radius:99px;background:#0b1118;overflow:hidden}.level-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#e99d25,#ffe36a);transition:width .2s}
-.currency{display:flex;align-items:center;gap:8px;min-width:112px;border:1px solid #465466;border-radius:10px;padding:8px 10px;background:#1b2531}.currency .coin-icon{font-size:20px}.currency small{display:block;color:var(--muted);font-size:9px;text-transform:uppercase}.currency b{font-size:15px;font-variant-numeric:tabular-nums}.top-nav{display:flex;align-items:center;gap:5px;margin-left:auto}.nav-btn{background:transparent;color:#e8edf3;border:0;border-left:1px solid #3b4655;padding:7px 11px;min-width:65px;font-size:10px;font-weight:800}.nav-btn .nav-icon{display:block;font-size:21px;margin-bottom:3px}.nav-btn.active{color:var(--accent-yellow);background:#26303c;border-radius:8px}
-.layout{display:grid;grid-template-columns:190px minmax(0,1fr);gap:10px;padding:10px;max-width:1800px;margin:auto}
-.panel{background:linear-gradient(145deg,#202b3a,#18212d);border:1px solid #39495b;border-radius:12px;box-shadow:0 8px 22px #0003;min-width:0;overflow:hidden}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 11px;background:#263343;border-bottom:1px solid #3b4a5b;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.35px}.panel-body{padding:10px}
-.staff-panel{align-self:start;position:sticky;top:82px}.staff-list{display:flex;flex-direction:column;gap:7px;padding:8px}.staff-card{display:grid;grid-template-columns:42px minmax(0,1fr);gap:8px;align-items:center;padding:8px 6px;border:1px solid #344456;border-radius:9px;background:#18232e}.avatar{height:43px;width:40px;border-radius:8px;display:grid;place-items:center;font-size:26px;background:linear-gradient(145deg,#364b5d,#202c39);border:1px solid #4a5b6c}.staff-name{font-size:12px;font-weight:850}.staff-role{font-size:10px;color:var(--muted);margin-top:2px}.staff-status{font-size:9px;color:#7de5a6;margin-top:4px}
-.workspace{min-width:0;display:flex;flex-direction:column;gap:10px}.stage-strip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.stage-chip{min-width:0;padding:8px 7px;border:1px solid #3a4a5a;background:#202b39;border-radius:9px;display:flex;align-items:center;gap:7px}.stage-number{width:27px;height:27px;flex:0 0 27px;border-radius:7px;display:grid;place-items:center;color:#101820;font-weight:1000;font-size:15px}.stage-chip b{font-size:10px;line-height:1.15}.stage-chip small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
-.factory-panel{position:relative}.factory-head{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid #39495b;background:#1d2937}.factory-head strong{font-size:12px;letter-spacing:.5px}.factory-head span{font-size:10px;color:var(--muted)}#factoryCanvas{display:block;width:100%;height:auto;aspect-ratio:1200/590;background:#17232b;touch-action:manipulation}
-.canvas-legend{display:flex;flex-wrap:wrap;gap:7px;padding:8px 10px;border-top:1px solid #334454;background:#17212c}.legend-pill{font-size:10px;color:#c4d0db;background:#263442;border:1px solid #3c4c5c;border-radius:6px;padding:4px 7px}
-.management-grid{display:grid;grid-template-columns:1.18fr 1fr .92fr 1.2fr;gap:8px;align-items:stretch}.management-panel{min-width:0}.management-panel[hidden]{display:none!important}.product-tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px}.small-tab{flex:0 0 auto;padding:6px 8px;border:1px solid #435365;border-radius:7px;background:#19232f;color:#c8d1dc;font-size:10px;font-weight:750}.small-tab.active{border-color:#e7bb3e;color:#ffe17a;background:#3b3421}
-.config-row{display:flex;flex-direction:column;gap:5px;margin:7px 0}.config-label{font-size:10px;font-weight:800;color:#c9d2dd}.model-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.model-btn{border:1px solid #3b4b5c;background:#17222d;color:#eef3f7;border-radius:8px;padding:7px 4px;min-width:0;font-size:10px}.model-btn.active{border-color:#56d995;box-shadow:0 0 0 1px #56d99555;background:#1d3a32}.model-art{height:39px;display:grid;place-items:center;font-size:29px}.model-btn small{display:block;font-size:9px;color:#b7c2cd}
-.color-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}.color-btn{height:27px;border-radius:7px;border:2px solid #536273;padding:0;position:relative}.color-btn.active{outline:2px solid #f2cf58;outline-offset:2px;border-color:#fff}.color-btn.active:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:white;text-shadow:0 1px 3px #000;font-weight:1000}
-.finish-row{display:flex;gap:6px}.finish-btn{flex:1;border:1px solid #435466;background:#17222e;border-radius:7px;padding:7px 4px;font-size:10px;color:#e4ebf1}.finish-btn.active{border-color:#42a5f5;background:#203c52}
-.quantity-row{display:flex;align-items:center;gap:8px}.quantity-row button{width:30px;height:30px;border:1px solid #48596b;border-radius:7px;background:#293747;color:white;font-size:18px}.quantity-row output{min-width:25px;text-align:center;font-size:18px;font-weight:900}.primary-btn{border:1px solid #5ae48f;border-radius:8px;background:linear-gradient(135deg,#27c66b,#0c9147);color:white;font-weight:900;padding:10px;width:100%;margin-top:8px;box-shadow:0 4px 12px #0003}.secondary-btn{border:1px solid #4a5c6e;border-radius:8px;background:#293747;color:#eef3f7;font-weight:800;padding:8px}
-.summary-list{display:flex;flex-direction:column;gap:8px}.summary-item{display:grid;grid-template-columns:42px 1fr;gap:8px;align-items:center;padding-bottom:7px;border-bottom:1px solid #344252}.summary-item:last-child{border-bottom:0}.summary-icon{height:40px;border-radius:8px;background:#111a23;display:grid;place-items:center;font-size:26px}.summary-item b{font-size:11px}.summary-item small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.summary-total{display:flex;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px solid #3b4a59;font-size:12px;font-weight:900}
-.queue-list,.active-list{display:flex;flex-direction:column;gap:7px;max-height:270px;overflow:auto}.queue-card,.active-card{padding:8px;border:1px solid #38495b;background:#17222e;border-radius:8px}.card-title{display:flex;justify-content:space-between;gap:6px;font-size:10px;font-weight:850}.card-meta{font-size:9px;color:var(--muted);margin:5px 0}.progress-track{height:7px}.progress-track span{display:block;height:100%;background:linear-gradient(90deg,#21b85b,#74e79b);border-radius:99px;transition:width .15s}.progress-label{display:flex;justify-content:space-between;gap:6px;font-size:9px;color:#c4d0dc;margin-top:4px}
-.stage-mini-list{display:flex;flex-direction:column;gap:4px;margin-top:7px}.stage-mini{display:grid;grid-template-columns:18px 1fr auto;gap:5px;align-items:center;font-size:9px;padding:4px;border-radius:5px;background:#202c39}.stage-mini .num{width:17px;height:17px;display:grid;place-items:center;border-radius:4px;color:#101820;font-weight:900}.stage-mini .count{color:#b5c2cd}
-.product-count-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px}.count-tab{border:1px solid #405163;background:#17222e;color:#cbd5df;border-radius:6px;padding:5px 7px;font-size:9px}.count-tab.active{border-color:#e6c34c;color:#ffe17a}.production-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.production-tile{border:1px solid #344557;border-radius:7px;background:#131c25;overflow:hidden;text-align:center}.tile-art{height:55px;display:grid;place-items:center;font-size:32px;background:linear-gradient(145deg,#283747,#141d27)}.production-tile small{display:block;padding:5px 2px;color:#c4d0dc;font-size:9px}
-.bottom-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(130px,1.1fr) minmax(105px,.8fr);gap:7px;padding:8px;background:#101720;border:1px solid #354454;border-radius:11px}.bottom-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #46586a;background:#1b2734;border-radius:8px;color:#f1f4f7;padding:9px 6px;font-size:10px;font-weight:850}.bottom-btn span{font-size:21px}.profit-box,.day-box{border-radius:8px;padding:7px 9px;display:flex;align-items:center;gap:8px}.profit-box{background:#087d3d;border:1px solid #2ecc71}.profit-box .big{font-size:23px}.profit-box small,.day-box small{display:block;font-size:9px;opacity:.8}.profit-box b,.day-box b{font-size:13px}.day-box{background:#1b2734;border:1px solid #46586a}.day-box .big{font-size:21px;color:#f4be49}
-.modal-backdrop{position:fixed;inset:0;z-index:50;background:#060a10c9;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}.modal-backdrop.open{display:flex}.modal{width:min(680px,100%);max-height:min(80vh,760px);overflow:auto;border:1px solid #4b5d70;border-radius:14px;background:#1b2634;box-shadow:0 20px 70px #0009}.modal-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 15px;background:#263545;border-bottom:1px solid #46596b}.modal-head h2{font-size:15px;margin:0}.modal-close{background:#17222e;color:#fff;border:1px solid #506174;border-radius:7px;width:32px;height:32px}.modal-body{padding:14px}.modal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.upgrade-card,.catalog-card{padding:11px;border:1px solid #3c4e60;border-radius:9px;background:#17222e}.upgrade-card{display:flex;justify-content:space-between;align-items:center;gap:10px}.upgrade-card strong,.catalog-card strong{font-size:12px}.upgrade-card small,.catalog-card p{display:block;color:var(--muted);font-size:10px;margin:4px 0}.upgrade-card button,.catalog-card button{border:1px solid #536579;background:#2a3b4c;color:white;border-radius:7px;padding:7px;font-size:10px;font-weight:800}.empty-state{color:#aebbc8;font-size:11px;text-align:center;padding:16px 8px;margin:0}.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;z-index:80;background:#e3fff0;color:#143c28;border-radius:10px;padding:11px 15px;font-weight:850;box-shadow:0 10px 35px #0007;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(max-width:1250px){.topbar{flex-wrap:wrap}.top-nav{order:5;width:100%;justify-content:space-around}.nav-btn{flex:1}.management-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.staff-panel{top:120px}}
-@media(max-width:780px){.layout{grid-template-columns:1fr;padding:7px}.staff-panel{position:static}.staff-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.staff-card{grid-template-columns:34px minmax(0,1fr);padding:6px 4px}.avatar{width:32px;height:36px;font-size:22px}.staff-role{font-size:9px}.stage-strip{grid-template-columns:repeat(3,minmax(0,1fr))}.brand{min-width:0;flex:1}.level-box{min-width:130px}.currency{min-width:95px}.bottom-bar{grid-template-columns:repeat(3,minmax(0,1fr))}.profit-box,.day-box{justify-content:center}.modal-grid{grid-template-columns:1fr}}
-@media(max-width:480px){.topbar{gap:7px;padding:8px}.brand-mark{width:36px;height:36px}.brand-title{font-size:13px}.brand-sub{font-size:8px}.level-box{order:3;flex-basis:100%;max-width:none}.currency{flex:1;padding:6px}.currency b{font-size:12px}.nav-btn{padding:6px 2px;font-size:9px;min-width:0}.nav-btn .nav-icon{font-size:18px}.management-grid{grid-template-columns:1fr}.staff-list{grid-template-columns:repeat(3,minmax(0,1fr))}.staff-name{font-size:10px}.staff-role{font-size:8px}.bottom-bar{grid-template-columns:repeat(2,minmax(0,1fr))}.profit-box,.day-box{min-height:52px}.stage-chip{padding:6px 4px;gap:4px}.stage-number{width:22px;height:22px;flex-basis:22px;font-size:12px}.stage-chip b{font-size:9px}.factory-head span{display:none}}
+:root{--bg:#121821;--panel:#1c2533;--panel2:#202c3b;--line:#344254;--yellow:#f1c40f;--green:#2ecc71;--muted:#a9b5c5;--text:#f3f6fb;--red:#ff6b6b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{overflow-x:hidden}.app{max-width:1600px;margin:auto;padding:10px;display:grid;gap:10px;grid-template-columns:245px minmax(0,1fr);grid-template-rows:auto minmax(430px,1fr) auto}
+.topbar{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:linear-gradient(135deg,#202b39,#18212d);border:1px solid var(--line);border-radius:13px;padding:12px 15px;box-shadow:0 8px 25px #0002}
+.brand{font-weight:900;letter-spacing:.5px;font-size:15px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.5px;margin-top:3px}
+.stats{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}.stat{background:#111923;border:1px solid #344254;border-radius:9px;padding:7px 10px;font-size:13px;font-weight:800;white-space:nowrap}.stat span{color:var(--yellow)}
+.level{min-width:140px;font-size:11px;color:var(--muted)}.levelbar{height:6px;background:#0d141d;border-radius:9px;margin-top:5px;overflow:hidden}.levelbar i{display:block;width:35%;height:100%;background:var(--yellow)}
+button{font:inherit;cursor:pointer;color:var(--text);background:#2b394b;border:1px solid #46566a;border-radius:8px;padding:8px 10px;font-weight:700}button:hover{filter:brightness(1.15)}button:active{transform:translateY(1px)}button.primary{background:#9b7b00;color:#fff5c3;border-color:#d3ad14}button:disabled{opacity:.45;cursor:not-allowed}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0}.panel-head{padding:12px 13px;border-bottom:1px solid var(--line);font-weight:900;font-size:12px;letter-spacing:.8px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}.sub{color:var(--muted);font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
+.team-list{padding:8px;display:grid;gap:6px}.worker{width:100%;display:grid;grid-template-columns:40px 1fr auto;align-items:center;text-align:left;gap:8px;padding:8px;background:#18212d;border:1px solid #2f3c4e;border-radius:9px}.worker.selected{border-color:var(--yellow);box-shadow:inset 3px 0 var(--yellow)}.avatar{height:38px;width:36px;image-rendering:pixelated;display:grid;place-items:center;font-size:22px;background:#26384b;border-radius:6px}.worker strong{font-size:12px;display:block}.worker small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.status{font-size:9px;color:var(--green);font-weight:900}.status.busy{color:var(--yellow)}
+.center{display:flex;flex-direction:column;min-height:430px}.factory-toolbar{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}.factory-toolbar strong{font-size:12px;margin-right:auto}.factory-wrap{position:relative;flex:1;min-height:350px;background:#111923;overflow:hidden}.factory-wrap canvas{display:block;width:100%;height:100%;min-height:350px;touch-action:manipulation}.hint{position:absolute;bottom:9px;left:10px;background:#111923d9;border:1px solid #344254;border-radius:7px;padding:6px 8px;color:#c7d2df;font-size:10px;pointer-events:none}.toast{position:absolute;top:10px;left:50%;transform:translateX(-50%);padding:8px 12px;border-radius:9px;background:#0b1119ed;border:1px solid var(--yellow);font-size:12px;display:none;max-width:90%;text-align:center}
+.bottom{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px}.bottom .panel{min-height:145px}.bodypad{padding:11px 12px}.order-title{font-size:13px;font-weight:900}.order-meta{font-size:11px;color:var(--muted);margin:5px 0 9px}.progress{height:7px;background:#0f1720;border-radius:8px;overflow:hidden;margin:8px 0}.progress i{display:block;height:100%;background:var(--green);width:0;transition:width .2s}.row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.row.spread{justify-content:space-between}.small{font-size:11px;color:var(--muted)}.materials{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.material{background:#17212d;border:1px solid #344254;border-radius:8px;padding:8px;font-size:11px}.material strong{display:block;margin-bottom:5px}.material button{padding:4px 6px;font-size:10px}.log{max-height:95px;overflow:auto;font-size:11px;color:#c4d0de;line-height:1.5}.log div{border-bottom:1px solid #2b3747;padding:4px 0}.tag{display:inline-block;background:#2a394a;border-radius:5px;padding:3px 6px;font-size:10px;color:#dbe4ef}.empty{color:var(--muted);font-size:11px}
+.art-gallery{grid-column:1/-1}.art-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:10px}.art-card{background:#151e29;border:1px solid #344254;border-radius:9px;overflow:hidden;min-width:0}.art-card img{display:block;width:100%;height:120px;object-fit:contain;background:#101720}.art-card strong{display:block;padding:7px 8px 2px;font-size:11px}.art-card small{display:block;padding:0 8px 8px;color:var(--muted);font-size:10px}@media(max-width:850px){.art-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.app{grid-template-columns:1fr;grid-template-rows:auto auto minmax(390px,55vh) auto}.topbar{grid-column:1}.team-panel{grid-row:auto}.team-list{grid-template-columns:repeat(3,minmax(0,1fr))}.worker{grid-template-columns:30px 1fr;padding:6px;gap:5px}.avatar{width:28px;height:32px;font-size:18px}.worker .status{grid-column:2}.bottom{grid-column:1;grid-template-columns:1fr}.bottom .panel{min-height:0}.stats{margin-left:0}.brand{flex:1}}
+@media(max-width:440px){.app{padding:6px;gap:7px}.topbar{padding:10px;gap:9px}.team-list{grid-template-columns:repeat(2,minmax(0,1fr))}.stat{font-size:11px;padding:6px 7px}.factory-wrap,.factory-wrap canvas{min-height:330px}.level{min-width:120px}.brand{font-size:13px}}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><div class="brand-mark">JR</div><div><div class="brand-title">JR CADEIRAS</div><div class="brand-sub">FÁBRICA DE MOBILIÁRIO</div></div></div>
-  <div class="level-box"><div class="level-row"><span>NÍVEL <b id="playerLevel">1</b></span><span id="levelProgressText">0 / 3.000 XP</span></div><div class="level-track"><span id="levelProgress"></span></div></div>
-  <div class="currency"><span class="coin-icon">🪙</span><div><small>Moedas</small><b id="coins">12.450</b></div></div>
-  <div class="currency"><span class="coin-icon">💎</span><div><small>Diamantes</small><b id="diamonds">320</b></div><button class="secondary-btn" style="padding:3px 8px" data-open-tab="shop" aria-label="Abrir loja">＋</button></div>
-  <nav class="top-nav" aria-label="Menu principal">
-    <button class="nav-btn active" data-tab="orders"><span class="nav-icon">📋</span>PEDIDOS</button>
-    <button class="nav-btn" data-tab="catalog"><span class="nav-icon">🗂️</span>CATÁLOGO</button>
-    <button class="nav-btn" data-tab="shop"><span class="nav-icon">🛒</span>LOJA REAL</button>
-    <button class="nav-btn" data-tab="upgrades"><span class="nav-icon">🔨</span>MELHORIAS</button>
-    <button class="nav-btn" data-tab="settings"><span class="nav-icon">⚙️</span>CONFIG.</button>
-  </nav>
-</header>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">🪑 JR CADEIRAS <small>FÁBRICA DE MOBILIÁRIO • TYCOON</small></div>
+    <div class="level">NÍVEL <b id="level">1</b> · <span id="xp">35/100 XP</span><div class="levelbar"><i id="xpbar"></i></div></div>
+    <div class="stats"><div class="stat">🪙 <span id="coins">2500</span></div><div class="stat">💎 <span id="gems">12</span></div><div class="stat">📦 <span id="ready">0</span> prontos</div></div>
+    <button id="saveBtn">Salvar</button>
+  </header>
 
-<div class="layout">
-  <aside class="panel staff-panel" id="staffPanel">
-    <div class="panel-head"><span>👷 Equipe da Fábrica</span><span>9/9</span></div>
-    <div class="staff-list">
-      <article class="staff-card"><div class="avatar">🧢</div><div><div class="staff-name">Leandro</div><div class="staff-role">Corte de Ferro e Pintura</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">🦺</div><div><div class="staff-name">Léo</div><div class="staff-role">Corte de Ferro e Pintura</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">👨🏽‍🏭</div><div><div class="staff-name">Lauan</div><div class="staff-role">Corte de Ferro e Pintura</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">🧔🏽</div><div><div class="staff-name">Lima Jr</div><div class="staff-role">Corte de Madeira</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">👨🏿‍🔧</div><div><div class="staff-name">Zaza</div><div class="staff-role">Corte de Madeira</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">👕</div><div><div class="staff-name">Daniel</div><div class="staff-role">Forração</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">👩🏽‍🔧</div><div><div class="staff-name">Cissa</div><div class="staff-role">Forração</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">👨🏽‍🔧</div><div><div class="staff-name">Breno</div><div class="staff-role">Montagem</div><div class="staff-status">● Em serviço</div></div></article>
-      <article class="staff-card"><div class="avatar">🧑🏽‍🔧</div><div><div class="staff-name">Kayke</div><div class="staff-role">Montagem</div><div class="staff-status">● Em serviço</div></div></article>
-    </div>
+  <aside class="panel team-panel">
+    <div class="panel-head">👷 Equipe <span class="sub">9 funcionários</span></div>
+    <div class="team-list" id="team"></div>
   </aside>
 
-  <main class="workspace">
-    <section class="stage-strip" aria-label="Etapas da produção">
-      <div class="stage-chip"><span class="stage-number" style="background:#2ecc71">1</span><div><b>CORTE DE FERROS</b><small id="stage-count-iron-cut">0 peças</small></div></div>
-      <div class="stage-chip"><span class="stage-number" style="background:#3498db">2</span><div><b>PINTURA</b><small id="stage-count-painting">0 peças</small></div></div>
-      <div class="stage-chip"><span class="stage-number" style="background:#e67e22">3</span><div><b>CORTE DE MADEIRAS</b><small id="stage-count-wood-cut">0 peças</small></div></div>
-      <div class="stage-chip"><span class="stage-number" style="background:#9b59b6">4</span><div><b>FORRAÇÃO</b><small id="stage-count-upholstery">0 peças</small></div></div>
-      <div class="stage-chip"><span class="stage-number" style="background:#27ae60">5</span><div><b>MONTAGEM</b><small id="stage-count-assembly">0 peças</small></div></div>
-      <div class="stage-chip"><span class="stage-number" style="background:#bdc3c7">🚚</span><div><b>EXPEDIÇÃO</b><small id="stage-count-shipping">0 peças</small></div></div>
-    </section>
-
-    <section class="panel factory-panel">
-      <div class="factory-head"><strong>🏭 CHÃO DE FÁBRICA · JR CADEIRAS</strong><span id="factoryStatus">Fábrica funcionando</span></div>
-      <canvas id="factoryCanvas" width="1200" height="590" aria-label="Canvas interativo da fábrica JR CADEIRAS"></canvas>
-      <div class="canvas-legend"><span class="legend-pill">🟢 Produção ativa</span><span class="legend-pill">🟡 Peças em movimento</span><span class="legend-pill">⚙️ Toque numa estação para ver melhorias</span></div>
-    </section>
-
-    <section class="management-grid" aria-label="Painéis de gestão">
-      <section class="panel management-panel" data-management-panel="orders">
-        <div class="panel-head"><span>🧾 Configurar Pedido</span><span id="orderDraftPrice">R$ 480</span></div>
-        <div class="panel-body">
-          <div class="product-tabs" role="tablist" aria-label="Tipo de móvel">
-            <button class="small-tab active" data-product-choice="chair">Cadeira</button><button class="small-tab" data-product-choice="bench">Banco</button><button class="small-tab" data-product-choice="stool">Banqueta</button><button class="small-tab" data-product-choice="wash">Lavatório</button><button class="small-tab" data-product-choice="combo">Combo</button>
-          </div>
-          <div class="config-row"><span class="config-label">Modelo</span><div class="model-grid" id="modelGrid">
-            <button class="model-btn active" data-model="allblack"><span class="model-art">🪑</span>All Black</button><button class="model-btn" data-model="classic"><span class="model-art">🪑</span>Clássica</button><button class="model-btn" data-model="automotive"><span class="model-art">💺</span>Automotiva</button>
-          </div></div>
-          <div class="config-row"><span class="config-label">Cor do estofamento</span><div class="color-grid" id="colorGrid">
-            <button class="color-btn active" data-color="black" style="background:#17191c" title="Preto" aria-label="Preto"></button><button class="color-btn" data-color="vintage-red" style="background:#a83d43" title="Vermelho Vintage" aria-label="Vermelho Vintage"></button><button class="color-btn" data-color="navy" style="background:#294b78" title="Azul Marinho" aria-label="Azul Marinho"></button><button class="color-btn" data-color="caramel" style="background:#bd8549" title="Caramelo" aria-label="Caramelo"></button><button class="color-btn" data-color="leather-brown" style="background:#704632" title="Marrom Couro" aria-label="Marrom Couro"></button><button class="color-btn" data-color="ice-white" style="background:#e5e5dc" title="Branco Gelo" aria-label="Branco Gelo"></button>
-          </div></div>
-          <div class="config-row"><span class="config-label">Acabamento</span><div class="finish-row"><button class="finish-btn active" data-finish="smooth">◯ Liso</button><button class="finish-btn" data-finish="capitone">⬡ Capitonê</button></div></div>
-          <div class="config-row"><span class="config-label">Quantidade</span><div class="quantity-row"><button id="qtyMinus" aria-label="Diminuir quantidade">−</button><output id="quantityValue">1</output><button id="qtyPlus" aria-label="Aumentar quantidade">＋</button></div></div>
-          <div class="notice" id="orderNote" style="font-size:10px;color:var(--muted)">A produção começa automaticamente quando a fila está disponível.</div>
-          <button class="primary-btn" id="addOrderButton" data-add-order>🛒 ADICIONAR À FILA</button>
-        </div>
-      </section>
-
-      <section class="panel management-panel" data-management-panel="summary">
-        <div class="panel-head"><span>📋 Resumo do Pedido</span><span class="tag" id="summaryTag">Rascunho</span></div>
-        <div class="panel-body"><div class="summary-list" id="orderSummary"></div><div class="summary-total"><span>Total estimado</span><strong id="summaryTotal">R$ 480</strong></div><button class="primary-btn" id="summaryAddButton">＋ CONFIRMAR PEDIDO</button></div>
-      </section>
-
-      <section class="panel management-panel" data-management-panel="queue">
-        <div class="panel-head"><span>📦 Fila de Produção</span><span id="queuedCount">0</span></div>
-        <div class="panel-body"><div class="queue-list" id="productionQueue"><p class="empty-state">Sua fila está vazia. Configure um pedido para começar.</p></div></div>
-      </section>
-
-      <section class="panel management-panel" data-management-panel="active">
-        <div class="panel-head"><span>⚙️ Produtos em Produção</span><span id="activeCount">0</span></div>
-        <div class="panel-body"><div class="product-count-tabs"><button class="count-tab active" data-stage-filter="all">Todos</button><button class="count-tab" data-stage-filter="0">Ferro</button><button class="count-tab" data-stage-filter="1">Pintura</button><button class="count-tab" data-stage-filter="2">Madeira</button><button class="count-tab" data-stage-filter="3">Forração</button><button class="count-tab" data-stage-filter="4">Montagem</button><button class="count-tab" data-stage-filter="5">Expedição</button></div><div class="active-list" id="activeProducts"><p class="empty-state">Nenhum produto em produção no momento.</p></div><div class="stage-mini-list" id="stageMiniList"></div></div>
-      </section>
-    </section>
-
-    <footer class="bottom-bar">
-      <button class="bottom-btn" data-tab="catalog"><span>🪑</span>CATÁLOGO DE PRODUTOS</button>
-      <button class="bottom-btn" data-tab="shop"><span>📣</span>ANÚNCIOS / LOJA REAL</button>
-      <button class="bottom-btn" data-tab="upgrades"><span>⚙️</span>MELHORIAS DA FÁBRICA</button>
-      <button class="bottom-btn" data-tab="staff"><span>👷</span>FUNCIONÁRIOS</button>
-      <div class="profit-box"><span class="big">＄</span><div><small>LUCRO ATUAL</small><b id="currentProfit">R$ 0</b></div></div>
-      <div class="day-box"><span class="big">▦</span><div><small id="dayCounter">DIA 1</small><b id="dayPhase">FASE 1</b></div></div>
-    </footer>
+  <main class="panel center">
+    <div class="factory-toolbar">
+      <strong>🏭 Chão de fábrica</strong>
+      <button id="zoomOut" aria-label="Diminuir zoom">−</button><button id="zoomIn" aria-label="Aumentar zoom">＋</button>
+      <button id="expandBtn">Expandir</button>
+    </div>
+    <div class="factory-wrap" id="factoryWrap">
+      <canvas id="gameCanvas" aria-label="Fábrica JR Cadeiras"></canvas>
+      <div class="toast" id="toast"></div>
+      <div class="hint">Toque em um funcionário para selecioná-lo; toque numa estação para trabalhar. Cadeira real carregada no setor de montagem.</div>
+    </div>
   </main>
-</div>
 
-<div class="modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal"><div class="modal-head"><h2 id="modalTitle">Gerenciamento</h2><button class="modal-close" data-close-modal aria-label="Fechar">✕</button></div><div class="modal-body" id="modalContent"></div></div>
+  <section class="bottom">
+    <div class="panel">
+      <div class="panel-head">📋 Pedido ativo <span class="tag" id="orderTag">NOVO</span></div>
+      <div class="bodypad">
+        <div class="order-title" id="orderName">Pedido #001 — Cadeira All Black</div>
+        <div class="order-meta" id="orderDesc">Produza a estrutura, o assento e finalize a montagem.</div>
+        <div class="row spread"><span class="small" id="phaseLabel">Etapa: Serralheria</span><b id="progressText">0%</b></div>
+        <div class="progress"><i id="orderProgress"></i></div>
+        <div class="row spread"><span class="small">Recompensa: <b id="reward">R$ 450</b></span><button class="primary" id="startOrder">Iniciar pedido</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">📦 Matéria-prima <span class="sub">estoque</span></div>
+      <div class="bodypad materials" id="materials"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">⚙️ Produção <span class="sub" id="productionState">Parada</span></div>
+      <div class="bodypad">
+        <div class="row spread"><span class="small">Funcionário selecionado</span><b id="selectedName">Léo</b></div>
+        <p class="small" id="selectedHelp">Escolha um funcionário e toque em uma estação para atribuir uma tarefa.</p>
+        <div class="row"><button id="workBtn" class="primary">Trabalhar na próxima etapa</button><button id="nextOrder">Próximo pedido</button></div>
+        <div class="log" id="log" style="margin-top:8px"></div>
+      </div>
+    </div>
+  </section>
+  <section class="panel art-gallery">
+    <div class="panel-head">🎨 Artes do projeto carregadas <span class="sub">referências + sprite usado no mapa</span></div>
+    <div class="art-grid">
+      <div class="art-card"><img src="./assets/moveis/cadeira-all-black.png" alt="Sprite da cadeira preta"><strong>Cadeira All Black</strong><small>Sprite individual carregado no mapa da fábrica.</small></div>
+      <div class="art-card"><img src="./assets/referencias/equipe-jr-referencia.png" alt="Referência dos nove funcionários"><strong>Equipe JR</strong><small>Folha de referência visual dos nove funcionários.</small></div>
+      <div class="art-card"><img src="./assets/referencias/serra-ferro-referencia.png" alt="Referência da serra de ferro"><strong>Serralheria</strong><small>Arte de referência da estação de corte de ferro.</small></div>
+      <div class="art-card"><img src="./assets/referencias/cabine-pintura-referencia.png" alt="Referência da cabine de pintura"><strong>Cabine de pintura</strong><small>Arte de referência da estação de pintura.</small></div>
+    </div>
+  </section>
 </div>
-<div class="toast" id="game-toast" role="status" aria-live="polite"></div>
-
 <script>
 (() => {
-'use strict';
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const money=n=>'R$ '+Math.floor(n).toLocaleString('pt-BR');
-const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const COLORS=[
- {id:'black',name:'Preto',hex:'#17191c'},{id:'vintage-red',name:'Vermelho Vintage',hex:'#a83d43'},
- {id:'navy',name:'Azul Marinho',hex:'#294b78'},{id:'caramel',name:'Caramelo',hex:'#bd8549'},
- {id:'leather-brown',name:'Marrom Couro',hex:'#704632'},{id:'ice-white',name:'Branco Gelo',hex:'#e5e5dc'}
-];
-const PRODUCTS={
- chair:{name:'Cadeira de Barbeiro',short:'Cadeira',icon:'🪑',price:480,unlocked:true},
- bench:{name:'Banco de Espera Baú',short:'Banco',icon:'🛋️',price:320,unlocked:false,cost:1800},
- stool:{name:'Banqueta',short:'Banqueta',icon:'🪑',price:150,unlocked:true},
- wash:{name:'Lavatório',short:'Lavatório',icon:'🚿',price:620,unlocked:false,cost:3500},
- combo:{name:'Combo Barbearia',short:'Combo',icon:'📦',price:1350,unlocked:false,cost:7000}
-};
-const STAGES=[
- {id:'iron-cut',name:'Corte de Ferros',short:'Corte de Ferros',seconds:8,color:'#2ecc71'},
- {id:'painting',name:'Pintura',short:'Pintura',seconds:7,color:'#3498db'},
- {id:'wood-cut',name:'Corte de Madeiras',short:'Corte de Madeiras',seconds:9,color:'#e67e22'},
- {id:'upholstery',name:'Forração',short:'Forração',seconds:10,color:'#9b59b6'},
- {id:'assembly',name:'Montagem',short:'Montagem',seconds:8,color:'#27ae60'},
- {id:'shipping',name:'Expedição',short:'Expedição',seconds:3,color:'#bdc3c7'}
-];
-const state={
- coins:12450,diamonds:320,profit:2450,xp:0,level:12,day:3,phase:2,paused:false,
- selectedProduct:'chair',selectedModel:'allblack',selectedColor:'black',finish:'smooth',quantity:1,
- queue:[],items:[],nextOrder:1,nextItem:1,unlocked:Object.fromEntries(Object.entries(PRODUCTS).map(([id,p])=>[id,p.unlocked])),
- machineLevels:Object.fromEntries(STAGES.map(s=>[s.id,1])),machineCosts:Object.fromEntries(STAGES.map((s,i)=>[s.id,500+i*150])),
- selectedTab:'orders',stageFilter:'all',lastDayTick:0,particles:[],selectedMachine:0
-};
-function notify(message){const t=$('#game-toast');t.textContent=message;t.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.remove('show'),2200);}
-function productPrice(id){let p=PRODUCTS[id].price;if(state.selectedModel==='classic')p*=1.12;if(state.selectedModel==='automotive')p*=1.28;if(state.finish==='capitone')p*=1.08;return Math.round(p);}
-function draftTotal(){return productPrice(state.selectedProduct)*state.quantity;}
-function updateDraft(){
- const p=PRODUCTS[state.selectedProduct],locked=!state.unlocked[state.selectedProduct];
- $('#orderDraftPrice').textContent=money(draftTotal());$('#quantityValue').textContent=state.quantity;
- $('#summaryTag').textContent=locked?'Bloqueado':'Rascunho';$('#summaryTotal').textContent=money(draftTotal());
- $('#orderNote').textContent=locked?`Desbloqueie ${p.name} no catálogo antes de produzir.`:`${p.name} · ${COLORS.find(c=>c.id===state.selectedColor).name} · ${state.finish==='capitone'?'Capitonê':'Liso'}.`;
- $('#addOrderButton').disabled=locked;$('#summaryAddButton').disabled=locked;
- $('#orderSummary').innerHTML=`<div class="summary-item"><div class="summary-icon">${p.icon}</div><div><b>${state.quantity}× ${escapeHTML(p.name)}</b><small>${escapeHTML(COLORS.find(c=>c.id===state.selectedColor).name)} · ${state.selectedModel==='allblack'?'All Black':state.selectedModel==='classic'?'Clássica':'Automotiva'}</small></div></div><div class="summary-item"><div class="summary-icon">🧵</div><div><b>${state.finish==='capitone'?'Capitonê':'Acabamento liso'}</b><small>Personalização do estofamento</small></div></div><div class="summary-item"><div class="summary-icon">💰</div><div><b>${money(productPrice(state.selectedProduct))} por unidade</b><small>Estimativa de venda por peça</small></div></div>`;
-}
-function createOrder(){
- const product=PRODUCTS[state.selectedProduct];if(!state.unlocked[state.selectedProduct]){notify('Produto bloqueado. Abra o catálogo para desbloquear.');openTab('catalog');return;}
- if(state.queue.length>=30){notify('Fila cheia. Aguarde a produção avançar.');return;}
- const order={id:state.nextOrder++,productId:state.selectedProduct,productName:product.name,icon:product.icon,quantity:state.quantity,color:COLORS.find(c=>c.id===state.selectedColor),model:state.selectedModel,finish:state.finish,unitPrice:productPrice(state.selectedProduct),total:productPrice(state.selectedProduct)*state.quantity,completed:0,createdAt:Date.now()};
- for(let i=0;i<order.quantity;i++)state.queue.push({...order,itemId:state.nextItem++,unitIndex:i+1,stageIndex:0,elapsed:0,progress:0,status:'queued',orderRef:order.id});
- notify(`Pedido #${order.id} adicionado à fila: ${order.quantity} ${product.short.toLowerCase()}(s).`);renderAll();
-}
-function duration(item,stageIndex){const level=state.machineLevels[STAGES[stageIndex].id];return STAGES[stageIndex].seconds/(1+(level-1)*.22);}
-function beginQueue(){
- // Cada peça entra na primeira etapa e segue por toda a linha; máquinas processam várias peças em paralelo.
- for(const item of state.queue){item.status='active';item.stageIndex=0;item.elapsed=0;item.progress=0;state.items.push(item);}
- state.queue=[];
-}
-function advanceItem(item,dt){
- item.elapsed+=dt;item.progress=Math.min(1,item.elapsed/duration(item,item.stageIndex));
- if(item.progress<1)return;
- if(item.stageIndex<4){item.stageIndex++;item.elapsed=0;item.progress=0;item.lastStageAt=performance.now();state.particles.push({x:factoryStations[item.stageIndex].x,y:factoryStations[item.stageIndex].y,life:.5,color:STAGES[item.stageIndex].color});}
- else {item.stageIndex=5;item.status='shipping';item.elapsed=0;item.progress=0;}
-}
-function tick(dt){
- if(state.paused)return;
- if(state.queue.length)beginQueue();
- for(const item of [...state.items]){
-  if(item.status==='shipping'){
-   item.elapsed+=dt;item.progress=Math.min(1,item.elapsed/STAGES[5].seconds);
-   if(item.progress>=1){item.status='shipped';state.coins+=item.unitPrice;state.profit+=item.unitPrice;state.xp+=item.unitPrice;notify(`Pedido #${item.orderRef} expedido! +${money(item.unitPrice)}`);}
-  }else if(item.status==='active')advanceItem(item,dt);
- }
- state.items=state.items.filter(i=>i.status!=='shipped');
- const newLevel=Math.max(1,Math.floor(state.xp/3000)+1);if(newLevel>state.level){state.level=newLevel;notify(`Nível ${state.level} alcançado!`);}
- if(performance.now()-state.lastDayTick>90000){state.lastDayTick=performance.now();state.phase++;if(state.phase>4){state.phase=1;state.day++;}}
-}
-function renderQueue(){
- $('#productionQueue').innerHTML=state.queue.length?state.queue.slice(0,20).map(i=>`<article class="queue-card"><div class="card-title"><span>#${i.orderRef} · ${escapeHTML(i.productName)}</span><span>${i.unitIndex}/${i.quantity}</span></div><div class="card-meta"><span style="color:${i.color.hex}">●</span> ${escapeHTML(i.color.name)} · ${money(i.unitPrice)}</div><div class="progress-track"><span style="width:0%"></span></div><div class="progress-label"><span>Aguardando produção</span><span>0%</span></div></article>`).join(''):'<p class="empty-state">Sua fila está vazia. Configure um pedido para começar.</p>';
- $('#queuedCount').textContent=state.queue.length;
-}
-function renderActive(){
- const all=[...state.items].sort((a,b)=>a.itemId-b.itemId),items=state.stageFilter==='all'?all:all.filter(i=>i.stageIndex===Number(state.stageFilter));
- $('#activeProducts').innerHTML=items.length?items.slice(0,30).map(i=>`<article class="active-card"><div class="card-title"><span>${i.icon} ${escapeHTML(i.productName)}</span><span>#${i.orderRef}</span></div><div class="card-meta"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${i.color.hex}"></span> ${escapeHTML(i.color.name)} · ${STAGES[i.stageIndex].name}</div><div class="progress-track"><span style="width:${Math.round(i.progress*100)}%;background:${STAGES[i.stageIndex].color}"></span></div><div class="progress-label"><span>${STAGES[i.stageIndex].name}</span><span>${Math.round(i.progress*100)}%</span></div></article>`).join(''):'<p class="empty-state">Nenhum produto nesta etapa.</p>';
- $('#activeCount').textContent=state.items.length;
- STAGES.forEach((s,index)=>{const el=$(`#stage-count-${s.id}`);if(el)el.textContent=state.items.filter(i=>i.stageIndex===index).length+' peças';});
- $('#stageMiniList').innerHTML=STAGES.map((s,index)=>`<div class="stage-mini"><span class="num" style="background:${s.color}">${index===5?'↗':index+1}</span><span>${s.short}</span><span class="count">${state.items.filter(i=>i.stageIndex===index).length} un.</span></div>`).join('');
-}
-function renderHUD(){
- $('#coins').textContent=state.coins.toLocaleString('pt-BR');$('#diamonds').textContent=state.diamonds.toLocaleString('pt-BR');$('#currentProfit').textContent=money(state.profit);
- $('#playerLevel').textContent=state.level;$('#dayCounter').textContent='DIA '+state.day;$('#dayPhase').textContent='FASE '+state.phase;
- const progress=state.xp%3000;$('#levelProgress').style.width=(progress/3000*100)+'%';$('#levelProgressText').textContent=`${progress.toLocaleString('pt-BR')} / 3.000 XP`;
- $('#factoryStatus').textContent=state.paused?'Produção pausada':state.items.length?`${state.items.length} peça(s) em produção`:'Aguardando pedidos';
-}
-function renderAll(){updateDraft();renderQueue();renderActive();renderHUD();renderModalContent();}
-function openTab(tab){
- state.selectedTab=tab;
- $$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
- if(tab==='orders'){document.querySelector('[data-management-panel="orders"]').scrollIntoView({behavior:'smooth',block:'nearest'});$('#gameModal').classList.remove('open');return;}
- const titles={catalog:'Catálogo de Produtos',shop:'Anúncios / Loja Real',upgrades:'Melhorias da Fábrica',staff:'Equipe da Fábrica',settings:'Configurações'};
- $('#modalTitle').textContent=titles[tab]||'Gerenciamento';renderModalContent();$('#gameModal').classList.add('open');
-}
-function closeModal(){$('#gameModal').classList.remove('open');}
-function upgradeMachine(id){
- const stage=STAGES.find(s=>s.id===id);if(!stage)return;const cost=state.machineCosts[id];
- if(state.coins<cost){notify('Moedas insuficientes para melhorar esta máquina.');return;}
- state.coins-=cost;state.machineLevels[id]++;state.machineCosts[id]=Math.ceil(cost*1.55);notify(`${stage.name} evoluiu para nível ${state.machineLevels[id]}.`);renderAll();
-}
-function unlockProduct(id){
- const p=PRODUCTS[id];if(!p||state.unlocked[id])return;if(state.coins<p.cost){notify(`Você precisa de ${money(p.cost)} para desbloquear ${p.name}.`);return;}
- state.coins-=p.cost;state.unlocked[id]=true;notify(`${p.name} desbloqueado!`);renderAll();
-}
-function renderModalContent(){
- const target=$('#modalContent'),tab=state.selectedTab;
- if(tab==='upgrades'){target.innerHTML=`<div class="modal-grid">${STAGES.slice(0,5).map(s=>`<article class="upgrade-card"><div><strong>${s.name}</strong><small>Nível ${state.machineLevels[s.id]} · Velocidade ${(1+(state.machineLevels[s.id]-1)*.22).toFixed(2)}×</small></div><button data-upgrade-machine="${s.id}" ${state.coins<state.machineCosts[s.id]?'disabled':''}>Melhorar ${money(state.machineCosts[s.id])}</button></article>`).join('')}</div>`;}
- else if(tab==='catalog'){target.innerHTML=`<div class="modal-grid">${Object.entries(PRODUCTS).map(([id,p])=>`<article class="catalog-card"><strong>${p.icon} ${p.name}</strong><p>Preço estimado por unidade: ${money(p.price)}</p><button data-unlock-product="${id}" ${state.unlocked[id]?'disabled':''}>${state.unlocked[id]?'Desbloqueado':`Desbloquear · ${money(p.cost)}`}</button></article>`).join('')}</div>`;}
- else if(tab==='staff'){target.innerHTML='<p>Equipe fixa por setor:</p><div class="modal-grid">'+[['Leandro, Léo e Lauan','Corte de ferros e pintura'],['Lima Jr e Zaza','Corte de madeiras'],['Daniel e Cissa','Forração'],['Breno e Kayke','Montagem']].map(x=>`<article class="catalog-card"><strong>${x[0]}</strong><p>${x[1]}</p></article>`).join('')+'</div>';}
- else if(tab==='shop'){target.innerHTML='<article class="catalog-card"><strong>📣 Anúncios da JR CADEIRAS</strong><p>O painel de anúncios é demonstrativo nesta versão. A loja real não realiza pagamentos.</p><button data-shop-message>Entendi</button></article>';}
- else if(tab==='settings'){target.innerHTML=`<article class="catalog-card"><strong>Configurações da fábrica</strong><p>Você pode pausar ou retomar a produção sem perder o progresso.</p><button id="pauseProduction">${state.paused?'▶ Retomar produção':'Ⅱ Pausar produção'}</button> <button id="resetGame">Reiniciar sessão</button></article>`;}
-}
-const factoryStations=[{x:120,y:270},{x:315,y:225},{x:510,y:285},{x:705,y:225},{x:895,y:285},{x:1080,y:190}];
-const canvas=$('#factoryCanvas'),ctx=canvas.getContext('2d');
-function polygon(points,fill,stroke){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();}}
-function line(points,color,width=2){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';ctx.stroke();}
-function label(t,x,y,size=12,color='#f2f5f7',align='center',weight=700){ctx.font=`${weight} ${size}px system-ui`;ctx.fillStyle=color;ctx.textAlign=align;ctx.fillText(t,x,y);}
-function roundRect(x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}}
-function drawFactory(now){
- const w=canvas.width,h=canvas.height;ctx.clearRect(0,0,w,h);
- const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,'#2b3b46');bg.addColorStop(1,'#17232b');ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
- // Perspective industrial floor
- polygon([[0,70],[780,0],[1200,120],[1200,590],[0,590]],'#26343b','#455660');
- for(let x=-200;x<1400;x+=48)line([[x,80],[x+340,590]],'#35474d',1);
- for(let y=120;y<620;y+=40)line([[0,y],[1200,y-60]],'#35474d',1);
- // Back wall, windows and beams
- polygon([[0,0],[1200,0],[1200,85],[0,145]],'#1c2933','#465660');
- for(let i=0;i<10;i++){const x=20+i*125;roundRect(x,12,72,42,4,'#314956','#526b76');line([[x+36,12],[x+36,54]],'#18252d',2);}
- for(let i=0;i<14;i++){const x=i*92-20;line([[x,0],[x+70,120]],'#4b5c62',5);}
- // Safety lanes
- line([[35,510],[1150,410]],'#f0c12c',5);line([[35,523],[1150,423]],'#f0c12c',2);
- // Conveyor links
- for(let i=0;i<5;i++){const a=factoryStations[i],b=factoryStations[i+1];line([[a.x+40,a.y+35],[b.x-40,b.y+35]],'#10191f',19);line([[a.x+40,a.y+35],[b.x-40,b.y+35]],'#7d8d90',10);for(let k=0;k<8;k++){const t=((now/1800+k/8)%1),x=a.x+40+(b.x-a.x-80)*t,y=a.y+35+(b.y-a.y)*t;ctx.fillStyle='#d3d9d7';ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fill();}}
- // Stations
- STAGES.forEach((s,i)=>{const p=factoryStations[i],selected=state.selectedMachine===i;ctx.fillStyle='#0005';ctx.beginPath();ctx.ellipse(p.x,p.y+42,66,31,0,0,Math.PI*2);ctx.fill();
-  polygon([[p.x-54,p.y+5],[p.x,p.y-22],[p.x+54,p.y+5],[p.x,p.y+32]],selected?'#e2b94b':'#4b6069','#9bafb3');
-  polygon([[p.x-54,p.y+5],[p.x,p.y+32],[p.x,p.y+53],[p.x-54,p.y+25]],'#293941','#60757d');
-  polygon([[p.x,p.y+32],[p.x+54,p.y+5],[p.x+54,p.y+25],[p.x,p.y+53]],'#18262e','#53666e');
-  roundRect(p.x-36,p.y-44,72,27,5,['#2b7b53','#276e9f','#a56a32','#8052a0','#257c55','#65737b'][i],'#b6c6c9');
-  label(['⚙','🎨','🪵','🧵','🔧','🚚'][i],p.x,p.y-25,18);
-  roundRect(p.x-53,p.y+58,106,22,5,'#101920','#4a5d65');label(s.short.toUpperCase(),p.x,p.y+72,9,'#f4f6f7');
-  const count=state.items.filter(item=>item.stageIndex===i).length;label(`${count} peça(s)`,p.x,p.y+91,10,'#c5d2d8');
- });
- // Workers drawn with simple animated sprites
- const workers=[['Leandro',90,355,'#d9b438'],['Léo',155,335,'#e5a92f'],['Lauan',215,395,'#89949b'],['Lima Jr',430,365,'#1d2025'],['Zaza',490,380,'#b83b43'],['Daniel',665,360,'#d93f45'],['Cissa',735,385,'#24272b'],['Breno',865,380,'#20242a'],['Kayke',930,390,'#15191d']];
- workers.forEach((worker,i)=>{const [name,x,y,shirt]=worker,bob=Math.sin(now/240+i)*2.2;ctx.fillStyle='#1118';ctx.beginPath();ctx.ellipse(x,y+15,16,6,0,0,Math.PI*2);ctx.fill();line([[x-5,y+3+bob],[x-7,y+13]],'#20262b',5);line([[x+5,y+3+bob],[x+8,y+13]],'#20262b',5);roundRect(x-9,y-22+bob,18,25,4,shirt,'#111820');line([[x-8,y-17+bob],[x-14,y-5+bob+Math.sin(now/100+i)*3]],'#b98460',4);line([[x+8,y-17+bob],[x+14,y-6+bob-Math.sin(now/100+i)*3]],'#b98460',4);ctx.fillStyle='#b98460';ctx.beginPath();ctx.arc(x,y-30+bob,8,0,Math.PI*2);ctx.fill();ctx.fillStyle='#17191c';ctx.beginPath();ctx.arc(x,y-33+bob,8,Math.PI,Math.PI*2);ctx.fill();roundRect(x-29,y-53+bob,58,16,4,'#111920','#3d4c55');label(name,x,y-42+bob,9,'#f3f5f6');});
- // Moving product sprites: interpolate between stage stations according to stage progress.
- state.items.forEach(item=>{const i=item.stageIndex,p=factoryStations[i];let x=p.x,y=p.y-6;
-  if(item.status==='active'&&i<5){const next=factoryStations[i+1],t=item.progress;x=p.x+(next.x-p.x)*t;y=p.y-8+(next.y-p.y)*t;}
-  else if(item.status==='shipping'){x=p.x+Math.sin(now/180+item.itemId)*4;y=p.y-12;}
-  ctx.save();ctx.translate(x,y);ctx.fillStyle='#0007';ctx.beginPath();ctx.ellipse(0,10,18,7,0,0,Math.PI*2);ctx.fill();
-  if(item.productId==='wash'){polygon([[-17,-7],[0,-17],[17,-7],[0,3]],'#e3e8e7','#8f9da1');polygon([[-17,-7],[0,3],[0,11],[-17,1]],'#a9b5b8','#66787f');}
-  else if(item.productId==='bench'){polygon([[-18,-8],[0,-17],[18,-8],[0,1]],item.color.hex,'#d3d7d7');polygon([[-18,-8],[0,1],[0,8],[-18,0]],'#69513e','#c4b7a8');}
-  else{polygon([[-11,-15],[0,-21],[11,-15],[0,-9]],item.color.hex,'#d9dfdf');polygon([[-11,-15],[0,-9],[0,2],[-11,-4]],item.color.hex,'#aeb8bb');polygon([[0,-9],[11,-15],[11,-4],[0,2]],'#59666b','#c6cecf');line([[-6,2],[-8,9],[0,11]],'#b5c1c4',2);line([[6,2],[8,9],[0,11]],'#b5c1c4',2);}
-  ctx.restore();
- });
- // sparks at machines when pieces are active
- state.items.forEach(item=>{if(item.status!=='active'||item.progress<.15||item.progress>.8)return;const p=factoryStations[item.stageIndex];if(Math.random()<.08){ctx.fillStyle='#ffd66b';ctx.beginPath();ctx.arc(p.x+(Math.random()-.5)*40,p.y+(Math.random()-.5)*28,2+Math.random()*2,0,Math.PI*2);ctx.fill();}});
- // Expedition truck
- roundRect(1020,42,155,52,8,'#e8ecea','#89989e');label('JR CADEIRAS',1097,62,12,'#18232b','center',900);label('EXPEDIÇÃO',1097,80,9,'#263640');
-}
-function bindEvents(){
- $$('[data-product-choice]').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.productChoice;if(!PRODUCTS[id])return;state.selectedProduct=id;$$('[data-product-choice]').forEach(x=>x.classList.toggle('active',x===b));updateDraft();}));
- $$('[data-model]').forEach(b=>b.addEventListener('click',()=>{state.selectedModel=b.dataset.model;$$('[data-model]').forEach(x=>x.classList.toggle('active',x===b));updateDraft();}));
- $$('[data-color]').forEach(b=>b.addEventListener('click',()=>{state.selectedColor=b.dataset.color;$$('[data-color]').forEach(x=>x.classList.toggle('active',x===b));updateDraft();}));
- $$('[data-finish]').forEach(b=>b.addEventListener('click',()=>{state.finish=b.dataset.finish;$$('[data-finish]').forEach(x=>x.classList.toggle('active',x===b));updateDraft();}));
- $('#qtyMinus').addEventListener('click',()=>{state.quantity=Math.max(1,state.quantity-1);updateDraft();});
- $('#qtyPlus').addEventListener('click',()=>{state.quantity=Math.min(50,state.quantity+1);updateDraft();});
- $('#addOrderButton').addEventListener('click',createOrder);$('#summaryAddButton').addEventListener('click',createOrder);
- $$('[data-tab],[data-open-tab]').forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.tab||b.dataset.openTab)));
- $$('[data-stage-filter]').forEach(b=>b.addEventListener('click',()=>{state.stageFilter=b.dataset.stageFilter;$$('[data-stage-filter]').forEach(x=>x.classList.toggle('active',x===b));renderActive();}));
- canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect(),x=(e.clientX-r.left)*canvas.width/r.width,y=(e.clientY-r.top)*canvas.height/r.height;let closest=0,dmin=Infinity;factoryStations.forEach((p,i)=>{const d=Math.hypot(x-p.x,y-p.y);if(d<dmin){dmin=d;closest=i;}});if(dmin<100){state.selectedMachine=closest;openTab('upgrades');}});
- $('#gameModal').addEventListener('click',e=>{if(e.target.id==='gameModal')closeModal();});
- document.addEventListener('click',e=>{
-  const up=e.target.closest('[data-upgrade-machine]');if(up)upgradeMachine(up.dataset.upgradeMachine);
-  const unlock=e.target.closest('[data-unlock-product]');if(unlock)unlockProduct(unlock.dataset.unlockProduct);
-  if(e.target.closest('[data-close-modal]'))closeModal();
-  if(e.target.closest('[data-shop-message]'))notify('A loja real é apenas demonstrativa nesta versão.');
-  if(e.target.id==='pauseProduction'){state.paused=!state.paused;renderAll();notify(state.paused?'Produção pausada.':'Produção retomada.');}
-  if(e.target.id==='resetGame'){if(confirm('Reiniciar a sessão?'))location.reload();}
- });
- document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-}
-function closeModal(){$('#gameModal').classList.remove('open');}
-function loop(now){const dt=Math.min(.05,(now-(loop.last||now))/1000);loop.last=now;tick(dt);drawFactory(now);renderHUD();renderActive();requestAnimationFrame(loop);}
-function init(){bindEvents();updateDraft();renderAll();requestAnimationFrame(loop);}
-init();
+  const $ = id => document.getElementById(id);
+  const canvas = $('gameCanvas'), ctx = canvas.getContext('2d');
+  const chairSprite = new Image();
+  chairSprite.src = './assets/moveis/cadeira-all-black.png';
+  const staff = [
+    {name:'Léo',role:'Serralheria',emoji:'👨🏿‍🏭',color:'#e4ad72',shirt:'#f1c40f',station:0},
+    {name:'Leandro',role:'Serralheria',emoji:'🧑🏻‍🏭',color:'#e6b58a',shirt:'#27384d',station:0},
+    {name:'Lauan',role:'Serralheria',emoji:'👨🏽‍🏭',color:'#c98f65',shirt:'#303c4e',station:0},
+    {name:'Lima Jr',role:'Corte de MDF',emoji:'🧑🏽‍🔧',color:'#bf865e',shirt:'#202a37',station:1},
+    {name:'Zaza',role:'Corte de MDF',emoji:'👨🏾‍🔧',color:'#9c684b',shirt:'#202a37',station:1},
+    {name:'Daniel',role:'Estofamento',emoji:'🧑🏻‍🔧',color:'#e0b18c',shirt:'#a51e2c',station:2},
+    {name:'Cissa',role:'Estofamento',emoji:'👩🏻‍🔧',color:'#dca783',shirt:'#252e3a',station:2},
+    {name:'Breno',role:'Montagem',emoji:'🧔🏻‍♂️',color:'#d6a17b',shirt:'#202a37',station:3},
+    {name:'Kaique',role:'Montagem',emoji:'👨🏽‍🔧',color:'#b77b58',shirt:'#202a37',station:3}
+  ];
+  const stations = [
+    {name:'Serralheria',short:'CORTE DE FERRO',x:.18,y:.27,icon:'⚙️',color:'#d6a51d'},
+    {name:'Corte de MDF',short:'SERRA MDF',x:.39,y:.28,icon:'🪚',color:'#c18b50'},
+    {name:'Estofamento',short:'ESTOFAMENTO',x:.61,y:.28,icon:'🧵',color:'#4c91ad'},
+    {name:'Montagem',short:'MONTAGEM',x:.81,y:.28,icon:'🔧',color:'#6c9b70'},
+    {name:'Pintura',short:'CABINE DE PINTURA',x:.25,y:.65,icon:'🎨',color:'#637c9b'},
+    {name:'Expedição',short:'EXPEDIÇÃO',x:.72,y:.65,icon:'📦',color:'#9a775b'}
+  ];
+  const materials = [
+    {id:'iron',name:'Tubos de ferro',icon:'🪨',qty:12,cost:80},
+    {id:'mdf',name:'Chapas de MDF',icon:'🪵',qty:10,cost:65},
+    {id:'fabric',name:'Courvin/tecido',icon:'🧵',qty:8,cost:55},
+    {id:'foam',name:'Espuma',icon:'⬜',qty:8,cost:40}
+  ];
+  let coins=2500,gems=12,level=1,xp=35,selected=0,zoom=1,expanded=false,active=false,progress=0,phase=0,ready=0,orderNum=1,last=performance.now();
+  let particles=[],logs=[],workTimer=0;
+  const phases=['Serralheria','Pintura','Corte de MDF','Estofamento','Montagem','Expedição'];
+  function log(msg){logs.unshift(msg);logs=logs.slice(0,4);$('log').innerHTML=logs.map(x=>`<div>› ${x}</div>`).join('')}
+  function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').style.display='none',2200)}
+  function renderTeam(){
+    $('team').innerHTML=staff.map((s,i)=>`<button class="worker ${i===selected?'selected':''}" data-worker="${i}"><span class="avatar">${s.emoji}</span><span><strong>${s.name}</strong><small>${s.role}</small></span><span class="status ${active&&i===selected?'busy':''}">${active&&i===selected?'TRABALHANDO':'DISPONÍVEL'}</span></button>`).join('');
+    $('team').querySelectorAll('[data-worker]').forEach(b=>b.onclick=()=>selectWorker(+b.dataset.worker));
+    $('selectedName').textContent=staff[selected].name;
+    $('selectedHelp').textContent=`${staff[selected].name} • ${staff[selected].role}. Toque na estação correspondente para atribuir trabalho.`;
+  }
+  function renderMaterials(){
+    $('materials').innerHTML=materials.map(m=>`<div class="material"><strong>${m.icon} ${m.name}</strong><div class="row spread"><span>Qtd. <b>${m.qty}</b></span><button data-buy="${m.id}">Comprar $${m.cost}</button></div></div>`).join('');
+    $('materials').querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{let m=materials.find(x=>x.id===b.dataset.buy);if(coins<m.cost){toast('Moedas insuficientes.');return}coins-=m.cost;m.qty+=5;updateStats();renderMaterials();log(`Comprou 5 unidades: ${m.name}.`);toast(`+5 ${m.name}`)});
+  }
+  function updateStats(){$('coins').textContent=coins.toLocaleString('pt-BR');$('gems').textContent=gems;$('ready').textContent=ready;$('level').textContent=level;$('xp').textContent=`${xp}/100 XP`;$('xpbar').style.width=xp+'%';$('progressText').textContent=Math.floor(progress)+'%';$('orderProgress').style.width=progress+'%';$('phaseLabel').textContent='Etapa: '+phases[Math.min(phase,5)];$('productionState').textContent=active?'Em produção':'Parada';$('startOrder').textContent=active?'Pausar produção':'Iniciar pedido';$('orderTag').textContent=active?'EM PRODUÇÃO':'AGUARDANDO'}
+  function selectWorker(i){selected=i;renderTeam();toast(`${staff[i].name} selecionado`)}
+  function startWork(){if(!active){active=true;log('Produção iniciada. Os funcionários estão trabalhando.');}else{active=false;log('Produção pausada.')}updateStats();renderTeam()}
+  $('startOrder').onclick=startWork;$('workBtn').onclick=()=>{if(!active)active=true;workTimer=2.5;log(`${staff[selected].name} iniciou trabalho em ${phases[Math.min(phase,5)]}.`);updateStats();renderTeam()};
+  $('nextOrder').onclick=()=>{if(active){toast('Pause a produção antes de trocar o pedido.');return}orderNum++;progress=0;phase=0;$('orderName').textContent=`Pedido #${String(orderNum).padStart(3,'0')} — ${['Cadeira All Black','Lavatório Clássico','Banco Baú 2 m','Cadeira Automotiva','Combo Barbearia'][((orderNum-1)%5)]}`;$('orderDesc').textContent='Novo contrato: confira materiais e acompanhe as etapas.';log(`Pedido #${orderNum} recebido.`);updateStats()};
+  $('zoomIn').onclick=()=>{zoom=Math.min(1.45,zoom+.1);toast(`Zoom ${Math.round(zoom*100)}%`)};$('zoomOut').onclick=()=>{zoom=Math.max(.75,zoom-.1);toast(`Zoom ${Math.round(zoom*100)}%`)};
+  $('expandBtn').onclick=()=>{expanded=!expanded;$('factoryWrap').style.position=expanded?'fixed':'relative';$('factoryWrap').style.inset=expanded?'10px':'auto';$('factoryWrap').style.zIndex=expanded?'20':'auto';$('factoryWrap').style.height=expanded?'calc(100dvh - 20px)':'';$('factoryWrap').style.width=expanded?'calc(100vw - 20px)':'';$('expandBtn').textContent=expanded?'Fechar expansão':'Expandir';resize();};
+  $('saveBtn').onclick=()=>{const data={coins,gems,level,xp,selected,progress,phase,ready,orderNum,materials};localStorage.setItem('jrCadeirasSave',JSON.stringify(data));toast('Progresso salvo neste dispositivo.');log('Jogo salvo localmente.')};
+  function loadSave(){try{const d=JSON.parse(localStorage.getItem('jrCadeirasSave')||'null');if(!d)return;coins=d.coins??coins;gems=d.gems??gems;level=d.level??level;xp=d.xp??xp;selected=d.selected??selected;progress=d.progress??progress;phase=d.phase??phase;ready=d.ready??ready;orderNum=d.orderNum??orderNum;if(d.materials)d.materials.forEach(saved=>{let m=materials.find(x=>x.id===saved.id);if(m)m.qty=saved.qty});$('orderName').textContent=`Pedido #${String(orderNum).padStart(3,'0')} — Cadeira All Black`;log('Save carregado.')}catch(e){}}
+  function resize(){const r=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.max(1,Math.floor(r.width*dpr));canvas.height=Math.max(1,Math.floor(r.height*dpr));ctx.setTransform(dpr,0,0,dpr,0,0)}
+  function poly(points,fill,stroke='#101720'){ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke()}}
+  function iso(x,y,w,h,fill){poly([[x,y],[x+w/2,y-h/4],[x+w,y],[x+w/2,y+h/4]],fill,'#344354');}
+  function drawFactory(t){
+    const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;
+    ctx.clearRect(0,0,w,h);ctx.save();ctx.translate(w/2,h/2);ctx.scale(zoom,zoom);ctx.translate(-w/2,-h/2);
+    ctx.fillStyle='#111923';ctx.fillRect(0,0,w,h);
+    // tiled isometric floor
+    const tile=38;for(let y=-tile;y<h+tile;y+=tile/2){for(let x=-tile;x<w+tile;x+=tile){const xx=x+((Math.floor(y/(tile/2))%2)*tile/2);iso(xx,y,tile,tile,'#1b2835');}}
+    // back wall and roof beams
+    poly([[12,25],[w-12,25],[w-12,h*.15],[12,h*.15]],'#263748','#3c4d60');
+    for(let x=25;x<w;x+=72){ctx.fillStyle='#35485b';ctx.fillRect(x,28,4,h*.12)}
+    // stations
+    stations.forEach((s,i)=>{
+      const x=w*s.x,y=h*s.y,sw=Math.min(140,w*.23),sh=67;
+      iso(x-sw/2,y,sw,sh,'#263545');
+      ctx.fillStyle=s.color;ctx.fillRect(x-sw/2+8,y-sh*.42,sw-16,5);
+      ctx.fillStyle='#101923';ctx.fillRect(x-sw/2+8,y-sh*.34,sw-16,sh*.48);
+      ctx.font='bold 21px system-ui';ctx.textAlign='center';ctx.fillStyle='#f2f5fa';ctx.fillText(s.icon,x,y-3);
+      ctx.font=`bold ${Math.max(8,Math.min(10,w/70))}px system-ui`;ctx.fillStyle='#d9e3ef';ctx.fillText(s.short,x,y+25);
+      // tools and product silhouettes
+      if(i===0){ctx.fillStyle='#d6a51d';ctx.fillRect(x-24,y-27,48,8);ctx.fillStyle='#8895a3';ctx.fillRect(x-18,y-39,36,11);ctx.fillStyle='#efbd29';ctx.beginPath();ctx.arc(x,y-39,8,0,Math.PI*2);ctx.fill()}
+      if(i===1){ctx.fillStyle='#b58b59';ctx.fillRect(x-28,y-23,56,9);ctx.fillStyle='#e0b16e';ctx.fillRect(x-21,y-35,42,9)}
+      if(i===2){ctx.fillStyle='#151d28';ctx.fillRect(x-27,y-24,54,11);ctx.fillStyle='#4e9bb7';ctx.fillRect(x-20,y-32,40,6)}
+      if(i===3){ctx.fillStyle='#151d28';ctx.fillRect(x-20,y-26,40,10);ctx.fillStyle='#e5bd55';ctx.fillRect(x-13,y-39,26,14);if(chairSprite.complete && chairSprite.naturalWidth){ctx.drawImage(chairSprite,x+12,y-57,36,48)}}
+      if(i===4){ctx.fillStyle='#526f8d';ctx.fillRect(x-28,y-26,56,20);ctx.fillStyle='#b7c8d9';ctx.fillRect(x-18,y-30,36,4)}
+      if(i===5){ctx.fillStyle='#b08a65';ctx.fillRect(x-24,y-29,48,20);ctx.fillStyle='#d9c5a6';ctx.fillRect(x-18,y-24,36,10)}
+    });
+    // conveyor between stations
+    ctx.strokeStyle='#697a8e';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(w*.19,h*.42);ctx.lineTo(w*.77,h*.42);ctx.stroke();
+    ctx.strokeStyle='#263545';ctx.lineWidth=3;for(let x=w*.2;x<w*.77;x+=18){ctx.beginPath();ctx.moveTo(x,h*.39);ctx.lineTo(x,h*.45);ctx.stroke()}
+    // little product travelling through the line
+    const px=w*.2+(t*.035%(w*.57));ctx.fillStyle='#111923';ctx.fillRect(px-9,h*.39,18,13);ctx.fillStyle='#d5dce5';ctx.fillRect(px-7,h*.36,14,4);
+    // workers walk between their work stations
+    staff.forEach((s,i)=>{
+      const st=stations[s.station],homeX=w*st.x+(i%3-1)*17,homeY=h*st.y+44;
+      let x=homeX,y=homeY;
+      const moving=active||workTimer>0;
+      if(moving){x+=Math.sin(t*1.6+i*1.7)*9;y+=Math.cos(t*1.3+i)*4}
+      const bob=Math.sin(t*5+i)*2;
+      // shadow
+      ctx.fillStyle='#0b1018aa';ctx.beginPath();ctx.ellipse(x,y+9,10,4,0,0,Math.PI*2);ctx.fill();
+      // legs
+      ctx.fillStyle='#151d29';ctx.fillRect(x-6,y-3+bob,5,12);ctx.fillRect(x+2,y-3-bob,5,12);
+      // torso
+      ctx.fillStyle=s.shirt;ctx.fillRect(x-8,y-17+bob,16,16);
+      ctx.fillStyle='#d9e3ee';ctx.fillRect(x-4,y-14+bob,8,3);
+      // head/hat
+      ctx.fillStyle=s.color;ctx.fillRect(x-6,y-28+bob,12,11);
+      ctx.fillStyle='#222b37';ctx.fillRect(x-7,y-30+bob,14,4);
+      ctx.fillStyle='#171d26';ctx.fillRect(x-3,y-23+bob,2,2);ctx.fillRect(x+3,y-23+bob,2,2);
+      if(i===selected){ctx.strokeStyle='#f1c40f';ctx.lineWidth=2;ctx.strokeRect(x-13,y-34+bob,26,51)}
+      ctx.font='bold 9px system-ui';ctx.textAlign='center';ctx.fillStyle='#f4f7fb';ctx.fillText(s.name,x,y+23);
+      if(active&&i===selected&&Math.random()<.04){particles.push({x:x+10,y:y-14,life:1,color:s.station===0?'#ffd65a':'#8ed8f2'})}
+    });
+    // ambient particles
+    particles=particles.filter(p=>p.life>0);particles.forEach(p=>{p.y-=.5;p.life-=.025;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,3,3)});ctx.globalAlpha=1;
+    ctx.restore();
+  }
+  function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
+    if(active){progress+=dt*2.2;if(progress>=100){progress=0;phase++;if(phase>=6){phase=0;active=false;ready++;coins+=450;xp+=25;if(xp>=100){xp-=100;level++;gems++;toast('Subiu de nível! +1 💎')}log('Pedido concluído! +R$ 450 e produto pronto para expedição.');renderTeam()}else{log(`Etapa concluída. Próxima: ${phases[phase]}.`)}}}
+    if(workTimer>0)workTimer-=dt;
+    drawFactory(t);updateStats();requestAnimationFrame(tick)}
+  canvas.addEventListener('click',e=>{
+    const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,w=r.width,h=r.height;
+    let nearest=-1,dist=Infinity;
+    staff.forEach((s,i)=>{const st=stations[s.station],sx=w*st.x+(i%3-1)*17,sy=h*st.y+44;const d=Math.hypot(x-sx,y-sy);if(d<dist){dist=d;nearest=i}});
+    if(dist<45){selectWorker(nearest);return}
+    let near=stations.reduce((best,s)=>{const d=Math.hypot(x-w*s.x,y-h*s.y);return d<best.d?{s,d}:best},{s:null,d:Infinity});
+    if(near.s&&near.d<90){const matching=staff.findIndex(s=>s.station===stations.indexOf(near.s));if(matching>=0)selectWorker(matching);workTimer=3;if(!active)active=true;log(`${staff[selected].name} foi direcionado para ${near.s.name}.`);updateStats();renderTeam()}
+  });
+  window.addEventListener('resize',resize);
+  loadSave();renderTeam();renderMaterials();resize();updateStats();log('Fábrica pronta. Compre materiais e inicie um pedido.');requestAnimationFrame(tick);
 })();
 </script>
 </body>
